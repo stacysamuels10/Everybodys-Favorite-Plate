@@ -95,9 +95,9 @@ const deleteUser = async () => {
       Password: Password,
     };
     const dataWeAreSending = await fetch(
-      "http://localhost:3000/user/get_user",
+      "http://localhost:3000/user/delete_user",
       {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
@@ -127,4 +127,5 @@ changePasswordSubmit.onclick = () => {
 
 deleteSubmit.onclick = () => {
   console.log("delete is working");
+  deleteUser();
 };

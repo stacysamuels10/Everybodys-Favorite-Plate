@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "aijtmbmw",
+    "password": "afyw55yvMpgLH10a4SM_ABaETM3sb_ap",
+    "database": "aijtmbmw",
+    "host": "batyr.db.elephantsql.com",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "aijtmbmw",
+    "password": "afyw55yvMpgLH10a4SM_ABaETM3sb_ap",
+    "database": "aijtmbmw",
+    "host": "batyr.db.elephantsql.com",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "aijtmbmw",
+    "password": "afyw55yvMpgLH10a4SM_ABaETM3sb_ap",
+    "database": "aijtmbmw",
+    "host": "batyr.db.elephantsql.com",
+    "dialect": "postgres"
+  }
+}

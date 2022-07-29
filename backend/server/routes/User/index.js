@@ -2,7 +2,7 @@ const express = require("express");
 const { Users } = require("../../../database/models");
 const router = express.Router();
 
-router.get("/get_user", async (req, res) => {
+router.post("/get_user", async (req, res) => {
   const user = await Users.findOne({
     where: {
       Username: req.body.Username,
@@ -10,6 +10,7 @@ router.get("/get_user", async (req, res) => {
     },
   });
   if (user) {
+    console.log(user);
     res.json({
       message: "Login Success",
       user: user,

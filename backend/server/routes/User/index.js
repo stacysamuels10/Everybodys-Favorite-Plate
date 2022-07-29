@@ -5,12 +5,11 @@ const router = express.Router();
 router.get("/get_user", async (req, res) => {
   const user = await Users.findOne({
     where: {
-      username: req.body.username,
-      password: req.body.password,
+      Username: req.body.Username,
+      Password: req.body.Password,
     },
   });
   if (user) {
-    console.log(user);
     res.json({
       message: "Login Success",
       user: user,

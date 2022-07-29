@@ -26,19 +26,25 @@ router.post("/create_user", async (req, res) => {
   const { Email, Username, Password } = req.body;
   console.log("line 11");
   try {
-    const UserInfo = {
-      Email: Email,
-      Username: Username,
-      Password: Password,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    console.log("woork");
-
-    const CreateUser = await Users.create(UserInfo);
-    console.log(CreateUser);
-    res.status(200).send(CreateUser);
+    const FindUsername = await Users.findOne({
+      where: {
+        Username: Username,
+      },
+    });
+    if (!FindUsername) {
+      const UserInfo = {
+        Email: Email,
+        Username: Username,
+        Password: Password,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      const CreateUser = await Users.create(UserInfo);
+      console.log(CreateUser);
+      res.status(200).send(CreateUser);
+    } else {
+      res.status(400).send("Username already exsist.");
+    }
   } catch (error) {
     console.log("no work");
     res.status(400).send(error);

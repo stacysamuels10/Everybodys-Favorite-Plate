@@ -60,6 +60,10 @@ signUpSubmit.onclick = () => {
 };
 
 signInSubmit.onclick = () => {
-  console.log("working");
+  console.log("i work now");
   findUser();
 };
+
+//username
+//old password
+//new password

@@ -2,8 +2,24 @@ const express = require("express");
 const { Users } = require("../../../database/models");
 const router = express.Router();
 
-router.get("/get_user", (req, res) => {
-  res.send("Got User");
+router.get("/get_user", async (req, res) => {
+  const user = await Users.findOne({
+    where: {
+      username: req.body.username,
+      password: req.body.password,
+    },
+  });
+  if (user) {
+    console.log(user);
+    res.json({
+      message: "Login Success",
+      user: user,
+    });
+  } else {
+    res.json({
+      message: "Login Failed",
+    });
+  }
 });
 
 router.post("/create_user", async (req, res) => {

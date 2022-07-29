@@ -1,3 +1,4 @@
+const { application } = require("express");
 const express = require("express");
 const { Users } = require("../../../database/models");
 const router = express.Router();
@@ -41,6 +42,28 @@ router.post("/create_user", async (req, res) => {
     res.status(200).send(CreateUser);
   } catch (error) {
     console.log("no work");
+    res.status(400).send(error);
+  }
+});
+router.post("/update_password", async (req, res) => {
+  const { Username, OldPassword, NewPassword } = req.body;
+  try {
+    const FindUsername = await Users.findOne({
+      where: {
+        Username: Username,
+      },
+    });
+    if (OldPassword === FindUsername.Password) {
+      FindUsername.update({
+        Username: Username,
+        Password: NewPassword,
+        updatedAt: new Date(),
+      });
+    } else {
+      res.send("Old Password incorrect");
+    }
+    res.status(200).send("Password updated");
+  } catch (error) {
     res.status(400).send(error);
   }
 });

@@ -2,3 +2,4 @@
 backend/.env
 node_modules
 backend/database/config/config.json
+backend/database/config/config.json

@@ -1,4 +1,3 @@
-const { application } = require("express");
 const express = require("express");
 const { Users } = require("../../../database/models");
 const router = express.Router();
@@ -59,10 +58,10 @@ router.post("/update_password", async (req, res) => {
         Password: NewPassword,
         updatedAt: new Date(),
       });
+      res.status(200).send("Password updated");
     } else {
       res.send("Old Password incorrect");
     }
-    res.status(200).send("Password updated");
   } catch (error) {
     res.status(400).send(error);
   }

@@ -1,5 +1,7 @@
 const signUpSubmit = document.getElementById("sign-up-submit");
 const signInSubmit = document.getElementById("sign-in-submit");
+const changePasswordSubmit = document.getElementById("UP-submit");
+const deleteSubmit = document.getElementById("DEL-submit");
 
 const sendData = async () => {
   const Email = document.getElementById("SU-email").value;
@@ -54,6 +56,60 @@ const findUser = async () => {
   }
 };
 
+const updatePassword = async () => {
+  const Username = document.getElementById("UP-username").value;
+  const OldPassword = document.getElementById("UP-password").value;
+  const NewPassword = document.getElementById("UP-new-password").value;
+  if (
+    Username.length !== 0 &&
+    OldPassword.length !== 0 &&
+    NewPassword.length !== 0
+  ) {
+    const data = {
+      Username: Username,
+      OldPassword: OldPassword,
+      NewPassword: NewPassword,
+    };
+    const dataWeAreSending = await fetch(
+      "http://localhost:3000/user/update_password",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const json = await dataWeAreSending.json();
+  } else {
+    console.log("passwords didnt change");
+  }
+};
+
+const deleteUser = async () => {
+  const Username = document.getElementById("DEL-username").value;
+  const Password = document.getElementById("DEL-password").value;
+  if (Username.length !== 0 && Password.length !== 0) {
+    const data = {
+      Username: Username,
+      Password: Password,
+    };
+    const dataWeAreSending = await fetch(
+      "http://localhost:3000/user/get_user",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const json = await dataWeAreSending.json();
+  } else {
+    console.log("enter");
+  }
+};
+
 signUpSubmit.onclick = () => {
   console.log("hello");
   sendData();
@@ -64,6 +120,11 @@ signInSubmit.onclick = () => {
   findUser();
 };
 
-//username
-//old password
-//new password
+changePasswordSubmit.onclick = () => {
+  console.log("hello I am working");
+  updatePassword();
+};
+
+deleteSubmit.onclick = () => {
+  console.log("delete is working");
+};

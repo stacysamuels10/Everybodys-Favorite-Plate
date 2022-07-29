@@ -66,5 +66,23 @@ router.post("/update_password", async (req, res) => {
     res.status(400).send(error);
   }
 });
+router.delete("/delete_user", async (req, res) => {
+  const { Username, Password } = req.body;
+  try {
+    const FindUsername = await Users.findOne({
+      where: {
+        Username: Username,
+      },
+    });
+    if (Password === FindUsername.Password) {
+      FindUsername.destroy();
+      res.status(200).send(`${Username}'s account has been deleted`);
+    } else {
+      res.send("Password Incorrect.");
+    }
+  } catch (error) {
+    res.status(400).send("Wrong Username or Password.");
+  }
+});
 
 module.exports = router;

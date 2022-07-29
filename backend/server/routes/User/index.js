@@ -31,7 +31,12 @@ router.post("/create_user", async (req, res) => {
         Username: Username,
       },
     });
-    if (!FindUsername) {
+    const FindEmail = await Users.findOne({
+      where: {
+        Email: Email,
+      },
+    });
+    if (!FindUsername && !FindEmail) {
       const UserInfo = {
         Email: Email,
         Username: Username,
@@ -43,7 +48,7 @@ router.post("/create_user", async (req, res) => {
       console.log(CreateUser);
       res.status(200).send(CreateUser);
     } else {
-      res.status(400).send("Username already exsist.");
+      res.status(400).send("Username or Email already exist.");
     }
   } catch (error) {
     console.log("no work");

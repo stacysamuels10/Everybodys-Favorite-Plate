@@ -2,9 +2,9 @@ const signUpSubmit = document.getElementById("sign-up-submit");
 const signInSubmit = document.getElementById("sign-in-submit");
 
 const sendData = async () => {
-  const Email = document.getElementById("email").value;
-  const Username = document.getElementById("username").value;
-  const Password = document.getElementById("password").value;
+  const Email = document.getElementById("SU-email").value;
+  const Username = document.getElementById("SU-username").value;
+  const Password = document.getElementById("SU-password").value;
   if (Email.length !== 0 && Username.length !== 0 && Password.length !== 0) {
     const data = {
       Email: Email,
@@ -23,8 +23,6 @@ const sendData = async () => {
         body: JSON.stringify(data),
       }
     );
-    console.log("data", data);
-    console.log(dataWeAreSending);
     const json = await dataWeAreSending.json();
     console.log(json);
   } else {
@@ -32,7 +30,36 @@ const sendData = async () => {
   }
 };
 
+const findUser = async () => {
+  const Username = document.getElementById("SI-username").value;
+  const Password = document.getElementById("SI-password").value;
+  if (Username.length !== 0 && Password.length !== 0) {
+    const data = {
+      Username: Username,
+      Password: Password,
+    };
+    const dataWeAreSending = await fetch(
+      "http://localhost:3000/user/get_user",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const json = await dataWeAreSending.json();
+  } else {
+    console.log("enter");
+  }
+};
+
 signUpSubmit.onclick = () => {
   console.log("hello");
   sendData();
+};
+
+signInSubmit.onclick = () => {
+  console.log("working");
+  findUser();
 };

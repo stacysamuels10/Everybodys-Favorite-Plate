@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "id",
         as: "users",
       });
-      SavedRecipe.belongsTo(models.NewRecipe, {
+      SavedRecipe.belongsTo(models.NewRecipes, {
         foreignKey: "id",
         as: "newrecipes",
       });

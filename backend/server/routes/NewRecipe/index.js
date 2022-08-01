@@ -44,6 +44,9 @@ router.post("/create_newrecipe", async (req, res) => {
     res.status(400).send(error);
   }
 });
+
+router.post("/update_name");
+// cheack and delete from saved table then delete newrecipe table
 router.delete("/delete_recipe", async (req, res) => {
   const { Username, Password, RecipeId } = req.body;
   try {

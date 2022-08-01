@@ -1,9 +1,9 @@
 const express = require("express");
-const { NewRecipe, Users } = require("../../../database/models");
+const { NewRecipes, Users } = require("../../../database/models");
 const router = express.Router();
 
 router.get("/get_newrecipe", async (req, res) => {
-  const newrec = await NewRecipe.findOne({
+  const newrec = await NewRecipes.findOne({
     where: {
       Name: req.body.Name,
     },
@@ -21,7 +21,7 @@ router.post("/create_newrecipe", async (req, res) => {
   try {
     const findusernameid = await Users.findOne({
       where: {
-        UserId: UserId,
+        id: UserId,
       },
     });
 
@@ -39,6 +39,8 @@ router.post("/create_newrecipe", async (req, res) => {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
+      const CreateRecipe = await NewRecipes.create(RecipeInfo);
+      res.status(200).send(CreateRecipe);
     }
   } catch (error) {
     res.status(400).send(error);
@@ -50,7 +52,7 @@ router.post("/update_name");
 router.delete("/delete_recipe", async (req, res) => {
   const { Username, Password, RecipeId } = req.body;
   try {
-    const findrecipe = await NewRecipe.findOne({
+    const findrecipe = await NewRecipes.findOne({
       where: {
         RecipeId: RecipeId,
       },
@@ -72,7 +74,7 @@ router.delete("/delete_recipe", async (req, res) => {
       });
     }
     if (Users.Password === Password) {
-      res.status(200).send(`${NewRecipe.Name} has been deleted`);
+      res.status(200).send(`${NewRecipes.Name} has been deleted`);
     } else {
       res.send("Password Incorrect.");
     }

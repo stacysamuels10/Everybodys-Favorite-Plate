@@ -1,0 +1,45 @@
+body {
+  background-color: #eeeef0;
+  font-family: "Arsenal", sans-serif;
+  color: #110903;
+  margin: 0;
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  height: 100%;
+}
+img {
+  width: 500px;
+  height: auto;
+}
+.side-bar {
+  margin: 0;
+  padding: 0;
+  background-color: #809376;
+}
+.main {
+  margin-left: 10px;
+}
+.logins {
+  display: grid;
+  grid-template-columns: 1fr 10px 1fr;
+  justify-items: center;
+}
+.sign-up {
+  display: flex;
+  flex-direction: column;
+}
+.sign-in {
+  display: flex;
+  flex-direction: column;
+}
+input {
+  width: 250px;
+  margin-top: 2px;
+  margin-bottom: 7px;
+}
+.divider {
+  border: 1px solid #110903;
+}

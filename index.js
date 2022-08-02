@@ -9,6 +9,7 @@ const models = require("./backend/database/models");
 const UserRoutes = require("./backend/server/routes/User");
 const NewRecipe = require("./backend/server/routes/NewRecipe");
 const SavedRecipe = require("./backend/server/routes/SavedRecipe");
+const SortingRoutes = require("./backend/server/routes/Sorting");
 
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const store = new SequelizeStore({
@@ -31,6 +32,7 @@ app.use(cors());
 app.use("/user", UserRoutes);
 app.use("/new_recipe", NewRecipe);
 app.use("/saved_recipe", SavedRecipe);
+app.use("/sorting", SortingRoutes);
 
 const CheckLogin = async (req, res, next) => {
   if (req.sesion.user) {

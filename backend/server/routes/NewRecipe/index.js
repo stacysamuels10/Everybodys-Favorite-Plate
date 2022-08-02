@@ -42,7 +42,7 @@ router.post("/create_newrecipe", LoginCheck, async (req, res) => {
   try {
     const findusernameid = await Users.findOne({
       where: {
-        UserId: UserId,
+        id: UserId,
       },
     });
 
@@ -60,6 +60,8 @@ router.post("/create_newrecipe", LoginCheck, async (req, res) => {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
+      const CreateRecipe = await NewRecipes.create(RecipeInfo);
+      res.status(200).send(CreateRecipe);
     }
   } catch (error) {
     res.status(400).send(error);
@@ -101,7 +103,7 @@ router.put("/update_newrecipe", LoginCheck, async (req, res) => {
 router.delete("/delete_recipe", LoginCheck, async (req, res) => {
   const { Password, RecipeId } = req.body;
   try {
-    const findrecipe = await NewRecipe.findOne({
+    const findrecipe = await NewRecipes.findOne({
       where: {
         id: RecipeId,
       },

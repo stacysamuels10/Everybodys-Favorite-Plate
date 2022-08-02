@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link defer rel="stylesheet" href="../css/style.css" />
+    <script defer src="../js/create-recipe.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="sign-up">
+      <h1>Create a recipe</h1>
+      <input
+        type="text"
+        class="create-recipe"
+        name="recipe-name"
+        id="recipe-name"
+        placeholder="Recipe Name"
+      />
+      <input
+        type="text"
+        class="create-recipe"
+        name="recipe-image"
+        id="recipe-image"
+        placeholder="Enter the image URL for your recipe"
+      />
+      <textarea
+        name="ingredients"
+        class="create-recipe"
+        id="ingredients"
+        cols="30"
+        rows="10"
+        placeholder="Enter the ingredients"
+      ></textarea>
+      <textarea
+        name="instructions"
+        id="instructions"
+        cols="30"
+        rows="10"
+        class="create-recipe"
+        placeholder="Enter the instructions"
+      ></textarea>
+      <button type="submit" class="create-recipe" id="create-recipe-submit">
+        Submit
+      </button>
+    </div>
+    <div class="sign-in">
+      <h1>Sign in!</h1>
+      <input
+        type="text"
+        class="sign-in"
+        name="username"
+        id="SI-username"
+        placeholder="Enter your username"
+      />
+      <input
+        type="text"
+        class="sign-in"
+        name="password"
+        id="SI-password"
+        placeholder="Enter your password"
+      />
+      <button type="submit" class="sign-in" id="sign-in-submit">Submit</button>
+    </div>
+    <div class="forgot-password">
+      <h1>Update Password!</h1>
+      <input
+        type="text"
+        name="UP-username"
+        id="UP-username"
+        placeholder="Enter your username"
+      />
+      <input
+        type="text"
+        name="UP-password"
+        id="UP-password"
+        placeholder="Enter your password"
+      />
+      <input
+        type="text"
+        name="UP-new-password"
+        id="UP-new-password"
+        placeholder="Enter your new password"
+      />
+      <button type="submit" id="UP-submit">Submit</button>
+    </div>
+    <div class="delete-account">
+      <h1>Delete your account</h1>
+      <input
+        type="text"
+        name="DEL-username"
+        id="DEL-username"
+        placeholder="Enter your username"
+      />
+      <input
+        type="text"
+        name="DEL-password"
+        id="DEL-password"
+        placeholder="Enter your password"
+      />
+      <button type="submit" id="DEL-submit">Submit</button>
+    </div>
+  </body>
+</html>

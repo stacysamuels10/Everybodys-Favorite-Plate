@@ -43,12 +43,22 @@ router.post("/add_savedrecipe", async (req, res) => {
       },
     });
     //Add session to this if
-    if (!FindRecipe) {
+    if (FindRecipe) {
       const SavedRecipeInfo = {
         UserId: req.session.users.id,
         RecipeId: RecipeId,
       };
       const AddSavedRecipe = await SavedRecipe.create(SavedRecipeInfo);
+      const TimesSavedfind = await NewRecipes.findOne({
+        where: {
+          id: RecipeId,
+        },
+      });
+      const currentTimesSaved = TimesSavedfind.TimesSaved;
+      const addTimesSaved = currentTimesSaved + 1;
+      TimesSavedfind.update({
+        TimesSaved: addTimesSaved,
+      });
       res.status(200).send(AddSavedRecipe);
     } else {
       res.send("Recipe already saved");

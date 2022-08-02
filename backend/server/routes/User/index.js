@@ -5,6 +5,7 @@ const { Users } = require("../../../database/models");
 const router = express.Router();
 
 const LoginCheck = async (req, res, next) => {
+  console.log(req.session);
   if (req.session.user) {
     next();
   } else {
@@ -53,8 +54,14 @@ router.post("/login", async (req, res) => {
     });
     console.log(finduser);
     console.log("beforebcrypt");
-    const validatePassword = await bcrypt.compare(Password, finduser.password);
+    const validatePassword = await bcrypt.compare(
+      Password,
+      finduser.dataValues.Password
+    );
+    console.log(finduser.Password);
+    console.log(validatePassword);
     if (validatePassword) {
+      console.log("validated");
       req.session.user = finduser;
       console.log(req.session);
       console.log(req.session.user);
@@ -108,6 +115,7 @@ router.post("/create_user", async (req, res) => {
   }
 });
 router.put("/update_user", LoginCheck, async (req, res) => {
+  console.log(req.session);
   const { Username, NewUsername, OldPassword, NewPassword, NewEmail } =
     req.body;
   try {
@@ -119,7 +127,7 @@ router.put("/update_user", LoginCheck, async (req, res) => {
 
     const validatePassword = await bcrypt.compare(
       OldPassword,
-      FindUsername.password
+      FindUsername.Password
     );
 
     if (validatePassword) {
@@ -164,6 +172,5 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
 });
 router.post("/logout", (req, res) => {
   req.session.destroy();
-  res.send(req.session.Username);
 });
 module.exports = router;

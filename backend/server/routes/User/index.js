@@ -5,6 +5,7 @@ const { Users } = require("../../../database/models");
 const router = express.Router();
 
 const LoginCheck = async (req, res, next) => {
+  console.log(req.session);
   if (req.session.user) {
     next();
   } else {
@@ -53,8 +54,14 @@ router.post("/login", async (req, res) => {
     });
     console.log(finduser);
     console.log("beforebcrypt");
-    const validatePassword = await bcrypt.compare(Password, finduser.password);
+    const validatePassword = await bcrypt.compare(
+      Password,
+      finduser.dataValues.Password
+    );
+    console.log(finduser.Password);
+    console.log(validatePassword);
     if (validatePassword) {
+      console.log("validated");
       req.session.user = finduser;
       console.log(req.session);
       console.log(req.session.user);
@@ -108,6 +115,7 @@ router.post("/create_user", async (req, res) => {
   }
 });
 router.put("/update_user", LoginCheck, async (req, res) => {
+  console.log(req.session);
   const { Username, NewUsername, OldPassword, NewPassword, NewEmail } =
     req.body;
   try {
@@ -119,7 +127,7 @@ router.put("/update_user", LoginCheck, async (req, res) => {
 
     const validatePassword = await bcrypt.compare(
       OldPassword,
-      FindUsername.password
+      FindUsername.Password
     );
 
     if (validatePassword) {
@@ -131,6 +139,8 @@ router.put("/update_user", LoginCheck, async (req, res) => {
         Email: NewEmail,
         updatedAt: new Date(),
       });
+      req.session.destroy();
+      req.session.user = FindUsername;
       res.status(200).send("Password updated");
     } else {
       res.send("Old Password incorrect");
@@ -148,12 +158,14 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
       },
     });
     console.log(req.session.user);
+    console.log(req.session.user.Password);
     const validatePassword = await bcrypt.compare(
       Password,
       req.session.user.Password
     );
     if (validatePassword) {
       FindUsername.destroy();
+      req.session.destroy();
       res.status(200).send(`${Username}'s account has been deleted`);
     } else {
       res.send("Password Incorrect.");
@@ -164,6 +176,5 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
 });
 router.post("/logout", (req, res) => {
   req.session.destroy();
-  res.send(req.session.Username);
 });
 module.exports = router;

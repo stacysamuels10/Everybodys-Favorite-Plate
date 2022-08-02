@@ -1,9 +1,19 @@
 const express = require("express");
-const { NewRecipes, Users } = require("../../../database/models");
+const { NewRecipe, Users, SavedRecipe } = require("../../../database/models");
+const bcrypt = require("bcrypt");
+const { reset } = require("nodemon");
 const router = express.Router();
 
-router.get("/get_newrecipe", async (req, res) => {
-  const newrec = await NewRecipes.findOne({
+const LoginCheck = async (req, res, next) => {
+  if (req.session.user) {
+    next();
+  } else {
+    res.redirect("/user/login");
+  }
+};
+
+router.get("/get_newrecipe", LoginCheck, async (req, res) => {
+  const newrec = await NewRecipe.findOne({
     where: {
       Name: req.body.Name,
     },
@@ -16,8 +26,19 @@ router.get("/get_newrecipe", async (req, res) => {
     message: "Recipe not found",
   });
 });
-router.post("/create_newrecipe", async (req, res) => {
-  const { Name, UserId, Picture, Ingredients, Instructions } = req.body;
+router.get("/get_all_id_recipe", LoginCheck, async (req, res) => {
+  const findall = await NewRecipe.findAll({
+    where: {
+      UserId: req.session.user.id,
+    },
+  });
+  console.log(findall);
+});
+router.get("/test", (req, res) => {
+  res.send("test worked");
+});
+router.post("/create_newrecipe", LoginCheck, async (req, res) => {
+  const { Name, Picture, Ingredients, Instructions } = req.body;
   try {
     const findusernameid = await Users.findOne({
       where: {
@@ -32,7 +53,7 @@ router.post("/create_newrecipe", async (req, res) => {
     } else {
       const RecipeInfo = {
         Name: Name,
-        UserId: UserId,
+        UserId: req.session.user.id,
         Picture: Picture,
         Ingredients: Ingredients,
         Instructions: Instructions,
@@ -46,32 +67,60 @@ router.post("/create_newrecipe", async (req, res) => {
     res.status(400).send(error);
   }
 });
-router.delete("/delete_recipe", async (req, res) => {
-  const { Username, Password, RecipeId } = req.body;
+
+router.put("/update_newrecipe", LoginCheck, async (req, res) => {
+  const { Name, Password, RecipeId, Picture, Ingredients, Instructions } =
+    req.body;
+  const findrecipe = await NewRecipe.findOne({
+    where: {
+      id: RecipeId,
+    },
+  });
+  try {
+    if (findrecipe) {
+      const validatePassword = await bcrypt.compare(
+        Password,
+        req.session.user.Password
+      );
+      if (validatePassword) {
+        findrecipe.update({
+          Name: Name,
+          Picture: Picture,
+          Ingredients: Ingredients,
+          Instructions: Instructions,
+        });
+      } else {
+        res.send("password incorrect");
+      }
+    } else {
+      res.send("Recipe not found");
+    }
+  } catch (error) {
+    res.send(error);
+  }
+});
+// cheack and delete from saved table then delete newrecipe table
+router.delete("/delete_recipe", LoginCheck, async (req, res) => {
+  const { Password, RecipeId } = req.body;
   try {
     const findrecipe = await NewRecipes.findOne({
       where: {
-        RecipeId: RecipeId,
+        id: RecipeId,
       },
     });
-    const findUsername = await Users.findOne({
-      where: {
-        Username: Username,
-        Password: Password,
-      },
-    });
+    const validatePassword = await bcrypt.compare(
+      Password,
+      req.session.user.Password
+    );
     if (!findrecipe) {
       res.json({
         message: "cant find recipe",
       });
     }
-    if (!findUsername) {
-      res.json({
-        message: "cant find Username",
-      });
-    }
-    if (Users.Password === Password) {
-      res.status(200).send(`${NewRecipes.Name} has been deleted`);
+    if (validatePassword) {
+      SavedRecipe.destroy({ where: { RecipeId: RecipeId } });
+      NewRecipe.destroy(findrecipe);
+      res.status(200).send(`${NewRecipe.Name} has been deleted`);
     } else {
       res.send("Password Incorrect.");
     }

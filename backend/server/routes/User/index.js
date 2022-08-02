@@ -139,6 +139,8 @@ router.put("/update_user", LoginCheck, async (req, res) => {
         Email: NewEmail,
         updatedAt: new Date(),
       });
+      req.session.destroy();
+      req.session.user = FindUsername;
       res.status(200).send("Password updated");
     } else {
       res.send("Old Password incorrect");
@@ -156,12 +158,14 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
       },
     });
     console.log(req.session.user);
+    console.log(req.session.user.Password);
     const validatePassword = await bcrypt.compare(
       Password,
       req.session.user.Password
     );
     if (validatePassword) {
       FindUsername.destroy();
+      req.session.destroy();
       res.status(200).send(`${Username}'s account has been deleted`);
     } else {
       res.send("Password Incorrect.");

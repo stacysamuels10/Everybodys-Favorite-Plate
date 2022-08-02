@@ -1,29 +1,72 @@
 const express = require("express");
+const session = require("express-session");
+const bcrypt = require("bcrypt");
 const { Users } = require("../../../database/models");
 const router = express.Router();
 
-router.post("/get_user", async (req, res) => {
-  const user = await Users.findOne({
-    where: {
-      Username: req.body.Username,
-      Password: req.body.Password,
-    },
-  });
-  if (user) {
-    console.log(user);
-    res.json({
-      message: "Login Success",
-      user: user,
-    });
+const LoginCheck = async (req, res, next) => {
+  if (req.session.user) {
+    next();
   } else {
-    res.json({
-      message: "Login Failed",
+    res.redirect("/login");
+  }
+};
+
+// router.post("/login", async (req, res) => {
+//   const user = await Users.findOne({
+//     where: {
+//       Username: req.body.Username,
+//       Password: req.body.Password,
+//     },
+//   });
+//   if (user) {
+//     req.session.user = user;
+//     console.log(user);
+//     // res.redirect("/new_recipe/test");
+//     res.json({
+//       message: "Login Success",
+//       user: user,
+//     });
+//   } else {
+//     res.json({
+//       message: "Login Failed",
+//     });
+//   }
+// });
+router.get("/userinfo", LoginCheck, async (req, res) => {
+  const { id, Email, Username, Password } = req.session.user;
+  const userinfo = {
+    id: id,
+    Email: Email,
+    Username: Username,
+    Password: Password,
+  };
+  res.send(userinfo);
+});
+router.post("/login", async (req, res) => {
+  const { Username, Password } = req.body;
+  try {
+    const finduser = await Users.findOne({
+      where: {
+        Username: Username,
+      },
     });
+    const validatePassword = await bcrypt.compare(Password, finduser.password);
+    if (validatePassword) {
+      req.session.user = finduser;
+      // res.redirect
+    } else {
+      res.status(400).send("Username or Password Incorrect");
+    }
+  } catch (error) {
+    res.send(error);
   }
 });
 
 router.post("/create_user", async (req, res) => {
   const { Email, Username, Password } = req.body;
+  const salt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(Password, salt);
   console.log("line 11");
   try {
     const FindUsername = await Users.findOne({
@@ -40,7 +83,7 @@ router.post("/create_user", async (req, res) => {
       const UserInfo = {
         Email: Email,
         Username: Username,
-        Password: Password,
+        Password: hashPassword,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -55,18 +98,28 @@ router.post("/create_user", async (req, res) => {
     res.status(400).send(error);
   }
 });
-router.post("/update_password", async (req, res) => {
-  const { Username, OldPassword, NewPassword } = req.body;
+router.put("/update_user", LoginCheck, async (req, res) => {
+  const { Username, NewUsername, OldPassword, NewPassword, NewEmail } =
+    req.body;
   try {
     const FindUsername = await Users.findOne({
       where: {
         Username: Username,
       },
     });
-    if (OldPassword === FindUsername.Password) {
+
+    const validatePassword = await bcrypt.compare(
+      OldPassword,
+      FindUsername.password
+    );
+
+    if (validatePassword) {
+      const salt = await bcrypt.genSalt(10);
+      const hashpassword = await bcrypt.hash(NewPassword, salt);
       FindUsername.update({
-        Username: Username,
-        Password: NewPassword,
+        Username: NewUsername,
+        Password: hashpassword,
+        Email: NewEmail,
         updatedAt: new Date(),
       });
       res.status(200).send("Password updated");
@@ -77,7 +130,7 @@ router.post("/update_password", async (req, res) => {
     res.status(400).send(error);
   }
 });
-router.delete("/delete_user", async (req, res) => {
+router.delete("/delete_user", LoginCheck, async (req, res) => {
   const { Username, Password } = req.body;
   try {
     const FindUsername = await Users.findOne({
@@ -85,7 +138,11 @@ router.delete("/delete_user", async (req, res) => {
         Username: Username,
       },
     });
-    if (Password === FindUsername.Password) {
+    const validatePassword = await bcrypt.compare(
+      Password,
+      req.session.user.Password
+    );
+    if (validatePassword) {
       FindUsername.destroy();
       res.status(200).send(`${Username}'s account has been deleted`);
     } else {

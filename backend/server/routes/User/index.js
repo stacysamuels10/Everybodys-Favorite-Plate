@@ -51,15 +51,23 @@ router.post("/login", async (req, res) => {
         Username: Username,
       },
     });
+    console.log(finduser);
+    console.log("beforebcrypt");
     const validatePassword = await bcrypt.compare(Password, finduser.password);
     if (validatePassword) {
       req.session.user = finduser;
+      console.log(req.session);
+      console.log(req.session.user);
+      console.log(req.session.user.Email);
+      console.log(req.session.user.Password);
+
+      res.status(200).send("logged in and sessionfound");
       // res.redirect
     } else {
       res.status(400).send("Username or Password Incorrect");
     }
   } catch (error) {
-    res.send(error);
+    res.status(400).send(error);
   }
 });
 
@@ -67,6 +75,7 @@ router.post("/create_user", async (req, res) => {
   const { Email, Username, Password } = req.body;
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(Password, salt);
+  console.log(`hashedpassword ${hashPassword}`);
   console.log("line 11");
   try {
     const FindUsername = await Users.findOne({
@@ -138,6 +147,7 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
         Username: Username,
       },
     });
+    console.log(req.session.user);
     const validatePassword = await bcrypt.compare(
       Password,
       req.session.user.Password
@@ -152,5 +162,8 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
     res.status(400).send("Wrong Username or Password.");
   }
 });
-
+router.post("/logout", (req, res) => {
+  req.session.destroy();
+  res.send(req.session.Username);
+});
 module.exports = router;

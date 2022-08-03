@@ -8,10 +8,13 @@ const LoginCheck = async (req, res, next) => {
   if (req.session.user) {
     next();
   } else {
-    res.status(500);
+    res.render("home");
   }
 };
 
+router.get("/dashboard", (req, res) => {
+  res.render("dashboard");
+});
 //what is this route supposed to do? Is this getting all saved recipes or one saved recipe?
 //if it is for one recipe, we can use the get recipe by id in the new recipe js file so i dont think we need this. will leave it here just in case
 router.post("/get_savedrecipe", async (req, res) => {

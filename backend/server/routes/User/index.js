@@ -1,7 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
-const { Users } = require("../../../database/models");
+const { NewRecipes, Users } = require("../../../database/models");
 const router = express.Router();
 
 const LoginCheck = async (req, res, next) => {
@@ -12,8 +12,20 @@ const LoginCheck = async (req, res, next) => {
     res.render("home");
   }
 };
-router.get("/home", (req, res) => {
-  res.render("home");
+router.get("/home", async (req, res) => {
+  try {
+    const top5 = await NewRecipes.findAll({
+      where: {
+        id: 37,
+      },
+    });
+    console.log("TOP5", top5);
+    res.render("home", {
+      locals: { title: top5 },
+    });
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 
 router.get("/account-info", (req, res) => {

@@ -46,7 +46,11 @@
                 name="email"
                 id="SU-email"
                 placeholder="Enter your email"
+                onkeyup="validateEmail();"
               />
+              <div class="validation">
+                <p id="validation-email-txt"></p>
+              </div>
               <label for="username">Username: </label>
               <input
                 type="text"
@@ -61,7 +65,7 @@
                 class="sign-up"
                 name="password"
                 id="SU-password"
-                onkeyup="passwordError();"
+                onkeyup="validatePassword();"
                 placeholder="Enter your password"
               />
               <div class="validation">

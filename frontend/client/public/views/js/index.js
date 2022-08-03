@@ -3,8 +3,23 @@ const signInSubmit = document.getElementById("sign-in-submit");
 //const changePasswordSubmit = document.getElementById("UP-submit");
 //const deleteSubmit = document.getElementById("DEL-submit");
 
-const passwordError = () => {
-  const validationField = document.getElementById("validation-txt");
+const validateEmail = () => {
+  const validationField1 = document.getElementById("validation-email-txt");
+  const emailError = [];
+  const validEmail =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const Email = document.getElementById("SU-email").value;
+  if (!validEmail.test(Email)) {
+    emailError.push("You have entered an invalid email address!");
+  }
+  if (emailError.length > 0) {
+    validationField1.innerHTML = emailError.join(" ");
+  }
+  validationField1.innerHTML = emailError.join(" ");
+};
+
+const validatePassword = () => {
+  const validationField2 = document.getElementById("validation-txt");
   const Password = document.getElementById("SU-password").value;
   const errors = [];
   const specialChars = /[~`!@#$%&*+=';/{}|:<>?()_]/;
@@ -29,22 +44,22 @@ const passwordError = () => {
     errors.push("Please user at least 1 number");
   }
   if (errors.length > 0) {
-    validationField.innerHTML = errors.join(" ");
+    validationField2.innerHTML = errors.join(" ");
     return false;
   }
-  validationField.innerHTML = errors.join(" ");
+  validationField2.innerHTML = errors.join(" ");
   return true;
 };
 
 const passwordMatch = () => {
   const match = [];
-  const validationField2 = document.getElementById("validation-pwd-txt");
+  const validationField3 = document.getElementById("validation-pwd-txt");
   const Password = document.getElementById("SU-password").value;
   const PasswordRe = document.getElementById("SU-password2").value;
   if (Password !== PasswordRe) {
     match.push("Please make sure you passwords match");
   }
-  validationField2.innerHTML = match.join("");
+  validationField3.innerHTML = match.join("");
 };
 
 const sendData = async () => {
@@ -59,29 +74,25 @@ const sendData = async () => {
     Password.length !== 0 &&
     PasswordRe.length !== 0
   ) {
-    if (Email.includes(emailChars)) {
-      const data = {
-        Email: Email,
-        Username: Username,
-        Password: Password,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      const dataWeAreSending = await fetch(
-        "http://localhost:3000/user/create_user",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      const status = dataWeAreSending.status;
-      console.log(status);
-    } else {
-      alert("Please enter a valid email");
-    }
+    const data = {
+      Email: Email,
+      Username: Username,
+      Password: Password,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    const dataWeAreSending = await fetch(
+      "http://localhost:3000/user/create_user",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const status = dataWeAreSending.status;
+    console.log(status);
   } else {
     alert("Please enter information in all fields");
   }

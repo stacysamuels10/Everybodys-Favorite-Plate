@@ -17,7 +17,7 @@ router.get("/dashboard", (req, res) => {
 });
 //what is this route supposed to do? Is this getting all saved recipes or one saved recipe?
 //if it is for one recipe, we can use the get recipe by id in the new recipe js file so i dont think we need this. will leave it here just in case
-router.post("/get_savedrecipe", async (req, res) => {
+router.post("/get_savedrecipe", LoginCheck, async (req, res) => {
   const { RecipeId } = req.body;
   console.log(RecipeId);
   const sessionUserId = req.session.user.id;
@@ -31,6 +31,8 @@ router.post("/get_savedrecipe", async (req, res) => {
     console.log(findSaved);
     if (findSaved) {
       res.status(200).send(findSaved);
+    } else {
+      res.status(400).send("Recipe does not exist");
     }
   } catch (error) {
     res.status(400).send("Saved Recipe does not exist");
@@ -82,6 +84,7 @@ router.post("/add_savedrecipe", async (req, res) => {
           NewRecipeId: id,
         },
       });
+      console.log(countTimesSaved);
       const findNewRec = await NewRecipes.findOne({
         where: {
           id: id,

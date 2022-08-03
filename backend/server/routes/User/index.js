@@ -12,7 +12,9 @@ const LoginCheck = async (req, res, next) => {
     res.redirect("/login");
   }
 };
-
+router.get("/home", (req, res) => {
+  res.render("home");
+});
 router.get("/userinfo", LoginCheck, async (req, res) => {
   const { id, Email, Username, Password } = req.session.user;
   const userinfo = {

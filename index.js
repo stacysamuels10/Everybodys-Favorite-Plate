@@ -10,7 +10,9 @@ const UserRoutes = require("./backend/server/routes/User");
 const NewRecipe = require("./backend/server/routes/NewRecipe");
 const SavedRecipe = require("./backend/server/routes/SavedRecipe");
 const SortingRoutes = require("./backend/server/routes/Sorting");
+const home = require("./backend/server/routes/index");
 const es6Renderer = require("express-es6-template-engine");
+const Home = require(".");
 
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const store = new SequelizeStore({
@@ -34,6 +36,7 @@ app.use("/user", UserRoutes);
 app.use("/new_recipe", NewRecipe);
 app.use("/saved_recipe", SavedRecipe);
 app.use("/sorting", SortingRoutes);
+app.use("/", home);
 app.engine("html", es6Renderer);
 app.set("views", "./frontend/client/public/views/html");
 app.set("view engine", "html");

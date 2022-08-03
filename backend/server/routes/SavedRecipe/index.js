@@ -11,10 +11,13 @@ const LoginCheck = async (req, res, next) => {
   }
 };
 
+//what is this route supposed to do?
 router.get("/get_savedrecipe", (req, res) => {
   res.send("got saved recipe");
 });
 
+//doesnt this need a try catch? i.e. in case the user has zero saved recipes
+//if try catch, please add 200 and 400 status
 router.get("get_all_savedrecipe"),
   LoginCheck,
   async (req, res) => {
@@ -35,7 +38,6 @@ router.post("/add_savedrecipe", async (req, res) => {
         },
       },
     });
-    //Add session to this if
     if (FindRecipe) {
       const SavedRecipeInfo = {
         UserId: req.session.users.id,
@@ -54,16 +56,17 @@ router.post("/add_savedrecipe", async (req, res) => {
       });
       res.status(200).send(AddSavedRecipe);
     } else {
+      //this needs a status 400 error
       res.send("Recipe already saved");
     }
   } catch (error) {
     res.status(400).send(error);
   }
 });
+
+//personally, i dont think we need them to enter their password to unsave a recipe. i think it will be too cumbersome.
+//just have them validate their session that they are still logged in
 router.delete("/delete_savedrecipe", LoginCheck, async (req, res) => {
-  //read Session to make sure the person is signed in
-  //use session to get userid and recipeid will be selected
-  // const stillsignedin
   const { Password, RecipeId } = req.body;
   try {
     const findRecipe = await SavedRecipe.findOne({
@@ -77,14 +80,17 @@ router.delete("/delete_savedrecipe", LoginCheck, async (req, res) => {
       req.session.user.Password
     );
     if (!findRecipe) {
+      //status 200 needed
       res.send("Recipe not found");
     }
     if (validatePassword) {
       FindSavedRecipe.destroy();
     } else {
+      //status 400 needed
       res.send("Password incorrect");
     }
   } catch (error) {
+    //status 400 needed
     res.send(error);
   }
 });

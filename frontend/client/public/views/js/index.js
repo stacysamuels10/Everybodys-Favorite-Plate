@@ -1,7 +1,6 @@
 const signUpSubmit = document.getElementById("sign-up-submit");
 const signInSubmit = document.getElementById("sign-in-submit");
 //const changePasswordSubmit = document.getElementById("UP-submit");
-//const deleteSubmit = document.getElementById("DEL-submit");
 
 const validateEmail = () => {
   const validationField1 = document.getElementById("validation-email-txt");
@@ -148,30 +147,6 @@ const findUser = async () => {
 //     const json = await dataWeAreSending.json();
 //   } else {
 //     console.log("passwords didnt change");
-//   }
-// };
-
-// const deleteUser = async () => {
-//   const Username = document.getElementById("DEL-username").value;
-//   const Password = document.getElementById("DEL-password").value;
-//   if (Username.length !== 0 && Password.length !== 0) {
-//     const data = {
-//       Username: Username,
-//       Password: Password,
-//     };
-//     const dataWeAreSending = await fetch(
-//       "http://localhost:3000/user/delete_user",
-//       {
-//         method: "DELETE",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(data),
-//       }
-//     );
-//     const json = await dataWeAreSending.json();
-//   } else {
-//     console.log("enter");
 //   }
 // };
 

@@ -1,146 +1,140 @@
 const express = require("express");
-const { NewRecipe, Users, SavedRecipe } = require("../../../database/models"); //is it NewRecipes or NewRecipe????
+const session = require("express-session");
+const { NewRecipes, Users, SavedRecipe } = require("../../../database/models"); //is it NewRecipes or NewRecipe????
 const bcrypt = require("bcrypt");
-//const { reset } = require("nodemon"); *** What is this????????
 const router = express.Router();
 
 const LoginCheck = async (req, res, next) => {
   if (req.session.user) {
     next();
   } else {
-    //need a status error here 400
     res.redirect("/user/login");
   }
 };
 
 router.post("/get_newrecipe", async (req, res) => {
   const { id } = req.body;
-  const newrec = await NewRecipe.findOne({
+  const newrec = await NewRecipes.findOne({
     where: {
       id: id,
     },
   });
   console.log(newrec);
   if (newrec) {
-    res.send(newrec);
+    console.log(newrec);
+    res.status(200).send(newrec);
   } else {
-    //there needs to be an error status 400 and message here
+    res.status(400).send("Recipe not found");
   }
-  res.send("Recipe not found");
 });
-router.post("/get_all_id_recipe", LoginCheck, async (req, res) => {
-  const findall = await NewRecipe.findAll({
+router.get("/get_all_id_recipe", LoginCheck, async (req, res) => {
+  const sessionid = req.session.user.id;
+  const findall = await NewRecipes.findAll({
     where: {
-      UserId: req.session.user.id,
+      UserId: sessionid,
     },
   });
-  //there is nothing sent here... there needs to be a try catch
-  //status 200 and 400 are needed and things need to be sent
-  //once things are tested, remove console logs
-  console.log(findall);
+  if (findall) {
+    res.status(200).send(findall);
+  } else {
+    res.status(400).send("No Recipes Found");
+  }
 });
-//what is this route?
-router.get("/test", (req, res) => {
-  res.send("test worked");
-});
-router.post("/create_newrecipe", LoginCheck, async (req, res) => {
-  const { Name, Picture, Ingredients, Instructions, FamilyStory } = req.body;
+
+router.post("/create_newrecipe", async (req, res) => {
+  console.log("create rec");
+  const { Name, Picture, Ingredients, Instructions } = req.body;
   try {
+    const userid = req.session.user.id;
     const findusernameid = await Users.findOne({
       where: {
-        id: UserId,
+        id: userid,
       },
     });
 
-    if (!findusernameid) {
-      //this should be a res.status error instead of json please
-      res.json({
-        message: "Have to be logged in to upload recipe",
-      });
-    } else {
+    if (findusernameid) {
       const RecipeInfo = {
         Name: Name,
-        UserId: req.session.user.id,
+        UserId: userid,
         Picture: Picture,
         Ingredients: Ingredients,
         Instructions: Instructions,
         FamilyStory: FamilyStory,
         createdAt: new Date(),
         updatedAt: new Date(),
+        TimesSaved: 0,
       };
       const CreateRecipe = await NewRecipes.create(RecipeInfo); //is it NewRecipe or NewRecipes????
-      res.status(200).send(CreateRecipe);
+      res.status(200).send("Recipe created");
+    } else {
+      res.status(400).send("have to be logged in to upload recipe")({
+        message: "Have to be logged in to upload recipe",
+      });
     }
   } catch (error) {
     res.status(400).send(error);
   }
 });
 
-//if they are logged in and on their dashboard, i dont think they need to enter their password to edit
-//a recipe so you can take the validate password out
-router.put("/update_newrecipe", LoginCheck, async (req, res) => {
-  const { Name, Password, RecipeId, Picture, Ingredients, Instructions } =
-    req.body;
-  const findrecipe = await NewRecipe.findOne({
+router.put("/update_newrecipe", async (req, res) => {
+  const { Name, id, Picture, Ingredients, Instructions } = req.body;
+  const findrecipe = await NewRecipes.findOne({
     where: {
-      id: RecipeId,
+      id: id,
     },
   });
   try {
     if (findrecipe) {
-      const validatePassword = await bcrypt.compare(
-        Password,
-        req.session.user.Password
-      );
-      if (validatePassword) {
-        findrecipe.update({
-          Name: Name,
-          Picture: Picture,
-          Ingredients: Ingredients,
-          Instructions: Instructions,
-        }); //send a status 200 also please
-      } else {
-        //need a status 400 error
-        res.send("password incorrect");
-      }
+      findrecipe.update({
+        Name: Name,
+        Picture: Picture,
+        Ingredients: Ingredients,
+        Instructions: Instructions,
+        updateAt: new Date(),
+      });
+      res.status(200).send("Recipe update");
     } else {
-      //need a status 400 error
-      res.send("Recipe not found");
+      res.status(400).send("Recipe not found");
     }
   } catch (error) {
-    //need a status 400
-    res.send(error);
+    res.status(400).send(error);
   }
 });
-// cheack and delete from saved table then delete newrecipe table
-router.delete("/delete_recipe", LoginCheck, async (req, res) => {
-  const { Password, RecipeId } = req.body;
+router.delete("/delete_recipe", async (req, res) => {
+  const { id } = req.body;
+  const sessioncheck = req.session.user.id;
+  console.log("sesson check");
+  console.log(sessioncheck);
   try {
     const findrecipe = await NewRecipes.findOne({
       //is it NewRecipes or NewRecipe???
       where: {
-        id: RecipeId,
+        id: id,
       },
     });
-    const validatePassword = await bcrypt.compare(
-      Password,
-      req.session.user.Password
-    );
-    if (!findrecipe) {
-      //res status 400 needed, can change to res.send
-      res.json({
-        message: "cant find recipe",
+    const recipeuserid = findrecipe.UserId;
+    console.log(recipeuserid);
+    console.log("findrecioe");
+    console.log(findrecipe);
+    console.log(sessioncheck);
+    console.log(id);
+    if (sessioncheck === recipeuserid) {
+      const findsavedrec = await SavedRecipe.findOne({
+        where: {
+          UserId: sessioncheck,
+          NewRecipeId: id,
+        },
       });
-    }
-    if (validatePassword) {
-      SavedRecipe.destroy({ where: { RecipeId: RecipeId } });
-      NewRecipe.destroy(findrecipe);
-      res.status(200).send(`${NewRecipe.Name} has been deleted`);
+      if (findsavedrec) {
+        SavedRecipe.destroy(findsavedrec);
+      }
+      findrecipe.destroy();
+      res.status(200).send(`Recipe has been deleted`);
     } else {
-      //status 400 needed
-      res.send("Password Incorrect.");
+      res.status(400).send("Cant find recipe or not logged in");
     }
-  } catch {
+  } catch (error) {
+    console.log(error);
     res.status(400).send("Wrong Username or password");
   }
 });

@@ -16,10 +16,10 @@ const accountDelete = () => {
   );
   if (deleteMyAccount) {
     //will invoke deleteUser() function when back end session confirmed
-    alert("Your account is deleted")
+    alert("Your account is deleted");
   }
 };
-const deleteUser = async () => {
+const deleteUser = () => {
   const EnterInfo = document.createElement("h2");
   EnterInfo.id = "enter-info";
   EnterInfo.innerText =
@@ -30,29 +30,29 @@ const deleteUser = async () => {
   Password.id = "DEL-password";
   const deleteSubmit = document.createElement("button");
   deleteSubmit.innerHTML = "Delete Account";
-  deleteSubmit.onclick = () => {
+  deleteSubmit.onclick = async () => {
     if (Username.value.length !== 0 && Password.value.length !== 0) {
-    const data = {
-      Username: Username.value,
-      Password: Password.value,
-    };
-    const dataWeAreSending = await fetch(
-      "http://localhost:3000/user/delete_user",
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
-    const json = await dataWeAreSending.json();
-  } else {
-    console.log("enter");
-  }
+      const data = {
+        Username: Username.value,
+        Password: Password.value,
+      };
+      const dataWeAreSending = await fetch(
+        "http://localhost:3000/user/delete_user",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      const json = await dataWeAreSending.json();
+    } else {
+      console.log("enter");
+    }
+  };
 };
-  }
-  
+
 deleteAccount.onclick = () => {
   accountDelete();
 };

@@ -10,7 +10,9 @@ router.get("/top5", async (req, res) => {
       order: [["TimesSaved", "DESC"]],
       limit: 4,
     });
-    res.status(200).send(top5);
+    res.status(200).render("home", {
+      locals: { title: top5 },
+    });
   } catch {
     res.status(400).send(error);
   }

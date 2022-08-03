@@ -6,53 +6,110 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link defer rel="stylesheet" href="../css/style.css" />
     <script defer src="../js/index.js"></script>
-    <title>Document</title>
+    <title>Welcome</title>
   </head>
   <body>
-    <div class="sign-up">
-      <h1>Create an account</h1>
-      <input
-        type="text"
-        class="sign-up"
-        name="email"
-        id="SU-email"
-        placeholder="Enter your email"
-      />
-      <input
-        type="text"
-        class="sign-up"
-        name="username"
-        id="SU-username"
-        placeholder="Enter your username"
-      />
-      <input
-        type="text"
-        class="sign-up"
-        name="password"
-        id="SU-password"
-        placeholder="Enter your password"
-      />
-      <button type="submit" class="sign-up" id="sign-up-submit">Submit</button>
-    </div>
-    <div class="sign-in">
-      <h1>Sign in!</h1>
-      <input
-        type="text"
-        class="sign-in"
-        name="username"
-        id="SI-username"
-        placeholder="Enter your username"
-      />
-      <input
-        type="text"
-        class="sign-in"
-        name="password"
-        id="SI-password"
-        placeholder="Enter your password"
-      />
-      <button type="submit" class="sign-in" id="sign-in-submit">Submit</button>
-    </div>
-    <div class="forgot-password">
+    <div class="container">
+      <div class="side-bar">
+        <img
+          src="https://images.unsplash.com/photo-1658696982879-a4d71b5c2e39?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+          alt="Unpeeled garlic bulb with many garlic cloves on grey and white background"
+        />
+      </div>
+      <div class="main">
+        <div class="welcome">
+          <h1>Welcome to Everyone's Favorite Plate</h1>
+          <h3>Crowdsourcing the family dinner table.</h3>
+          <p>
+            We want to be a resource for people to not lose their precious
+            recipes. Whether it is the 100 year old secret recipe from your
+            great-grandmother or the recipe you and your partner made up and eat
+            every Tuesday night, we know the dinner table brings people
+            together. Experiencing each others lives through the food on our
+            plates can bring the world a little bit closer. The key to each of
+            these recipes is they all have one secret ingredient in common:
+          </p>
+          <h4>Love</h4>
+          <p>
+            So take a browse and see the recipes that are Everyone's Favorite
+            Plate.
+          </p>
+        </div>
+        <div class="logins">
+          <div class="sign-up">
+            <h1>Sign up</h1>
+            <div class="form">
+              <label for="email">Email: </label>
+              <input
+                type="text"
+                class="sign-up"
+                name="email"
+                id="SU-email"
+                placeholder="Enter your email"
+              />
+              <label for="username">Username: </label>
+              <input
+                type="text"
+                class="sign-up"
+                name="username"
+                id="SU-username"
+                placeholder="Enter your username"
+              />
+              <label for="password">Password: </label>
+              <input
+                type="password"
+                class="sign-up"
+                name="password"
+                id="SU-password"
+                placeholder="Enter your password"
+              />
+              <div class="validation">
+                <p id="validation-txt"></p>
+              </div>
+              <label for="password">Re-enter Password: </label>
+              <input
+                type="password"
+                class="sign-up"
+                name="password2"
+                id="SU-password2"
+                placeholder="Enter your password"
+              />
+              <div class="validation-match">
+                <p id="validation-pwd-txt"></p>
+              </div>
+              <button type="submit" class="sign-up" id="sign-up-submit">
+                Submit
+              </button>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="sign-in">
+            <h1>Sign in</h1>
+            <div class="form">
+              <label for="Username">Username: </label>
+              <input
+                type="text"
+                class="sign-in"
+                name="Username"
+                id="SI-username"
+                placeholder="Enter your username"
+              />
+              <label for="Password">Password: </label>
+              <input
+                type="text"
+                class="sign-in"
+                name="Password"
+                id="SI-password"
+                placeholder="Enter your password"
+              />
+              <button type="submit" class="sign-in" id="sign-in-submit">
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="forgot-password">
       <h1>Update Password!</h1>
       <input
         type="text"
@@ -88,7 +145,7 @@
         id="DEL-password"
         placeholder="Enter your password"
       />
-      <button type="submit" id="DEL-submit">Submit</button>
+      <button type="submit" id="DEL-submit">Submit</button> -->
     </div>
   </body>
 </html>

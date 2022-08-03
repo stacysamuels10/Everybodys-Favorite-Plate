@@ -1,6 +1,7 @@
 const express = require("express");
 const { SavedRecipe, Users, NewRecipes } = require("../../../database/models");
 const bcrypt = require("bcrypt");
+const session = require("express-session");
 const router = express.Router();
 
 const LoginCheck = async (req, res, next) => {
@@ -11,101 +12,119 @@ const LoginCheck = async (req, res, next) => {
   }
 };
 
-router.post("/get_savedrecipe", (req, res) => {
-  const {UserId, RecipeId} = req.body
-  const find = await findOne({
-    where:{
-      UserId: UserId,
-      RecipeId: RecipeId
-
+//what is this route supposed to do?
+router.post("/get_savedrecipe", async (req, res) => {
+  const { RecipeId } = req.body;
+  console.log(RecipeId);
+  const sessionUserId = req.session.user.id;
+  try {
+    const findSaved = await SavedRecipe.findOne({
+      where: {
+        UserId: sessionUserId,
+        NewRecipeId: RecipeId,
+      },
+    });
+    console.log(findSaved);
+    if (findSaved) {
+      res.status(200).send(findSaved);
     }
-  })
-  if (find) {
-    res.send(find);
-  }
-  else{
-  res.send("Recipe not found");
+  } catch (error) {
+    res.status(400).send("Saved Recipe does not exist");
   }
 });
 
-router.get("get_all_savedrecipe"),
-  LoginCheck,
-  async (req, res) => {
+router.get("/get_all_savedrecipe", LoginCheck, async (req, res) => {
+  try {
     const findall = await SavedRecipe.findAll({
-      where: { Userid: req.session.user.id },
+      where: { UserId: req.session.user.id },
     });
-    res.send(findall);
-  };
+    console.log(findall);
+    if (findall) {
+      res.status(200).send(findall);
+    } else {
+      res.status(400).send("Cannot find Recie");
+    }
+  } catch (error) {
+    res.status(400).send("Could not find any Saved Recipes");
+  }
+});
 
 router.post("/add_savedrecipe", async (req, res) => {
-  const { RecipeId } = req.body;
+  const { id } = req.body;
+  console.log(req.session.user);
+  const SessionUser = req.session.user.id;
+  console.log(SessionUser);
   try {
-    // const FindUser = await SavedRecipe.findOne({
-    //   where: {
-    //     // change to session
-    //     Userid: Userid
-
-    //   },
-    // });
+    console.log("try");
     const FindRecipe = await SavedRecipe.findOne({
       where: {
-        where: {
-          UserId: req.session.user.id,
-          NewRecipeId: RecipeId,
-        },
+        UserId: SessionUser,
+        NewRecipeId: id,
       },
     });
-    //Add session to this if
-    if (FindRecipe) {
+    console.log("before find recipe");
+    console.log(FindRecipe);
+    if (!FindRecipe) {
       const SavedRecipeInfo = {
-        UserId: req.session.users.id,
-        RecipeId: RecipeId,
+        UserId: SessionUser,
+        NewRecipeId: id,
+        createAt: new Date(),
+        updatedAt: new Date(),
       };
+      console.log(SavedRecipeInfo);
       const AddSavedRecipe = await SavedRecipe.create(SavedRecipeInfo);
-      const TimesSavedfind = await NewRecipes.findOne({
+      const countTimesSaved = await SavedRecipe.count({
         where: {
-          id: RecipeId,
+          NewRecipeId: id,
         },
       });
-      const currentTimesSaved = TimesSavedfind.TimesSaved;
-      const addTimesSaved = currentTimesSaved + 1;
-      TimesSavedfind.update({
-        TimesSaved: addTimesSaved,
+      const findNewRec = await NewRecipes.findOne({
+        where: {
+          id: id,
+        },
       });
-      res.status(200).send(AddSavedRecipe);
+      console.log(findNewRec);
+      console.log("timessave");
+      console.log(countTimesSaved);
+      await findNewRec.update({
+        where: {
+          TimesSaved: countTimesSaved,
+        },
+      });
+      console.log(findNewRec);
+      res.status(200).send("Saved Recipe");
     } else {
-      res.send("Recipe already saved");
+      //this needs a status 400 error
+      res.status(400).send("Recipe has already saved");
     }
   } catch (error) {
     res.status(400).send(error);
   }
 });
+
+//personally, i dont think we need them to enter their password to unsave a recipe. i think it will be too cumbersome.
+//just have them validate their session that they are still logged in
 router.delete("/delete_savedrecipe", LoginCheck, async (req, res) => {
-  //read Session to make sure the person is signed in
-  //use session to get userid and recipeid will be selected
-  // const stillsignedin
-  const { Password, RecipeId } = req.body;
+  const { NewRecipeId } = req.body;
   try {
     const findRecipe = await SavedRecipe.findOne({
       where: {
         UserId: req.session.user.id,
-        RecipeId: RecipeId,
+        NewRecipeId: NewRecipeId,
       },
     });
-    const validatePassword = await bcrypt.compare(
-      Password,
-      req.session.user.Password
-    );
+    console.log(findRecipe);
     if (!findRecipe) {
-      res.send("Recipe not found");
+      res.status(400).send("Recipe not found");
     }
-    if (validatePassword) {
-      FindSavedRecipe.destroy();
+    if (findRecipe) {
+      findRecipe.destroy();
+      res.status(200).send("Saved Recipe Deleted");
     } else {
-      res.send("Password incorrect");
+      res.status(400).send("User is not signed in");
     }
   } catch (error) {
-    res.send(error);
+    res.status(400).send(error);
   }
 });
 

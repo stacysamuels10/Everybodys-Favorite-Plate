@@ -12,5 +12,28 @@
       <a href="http://">My Dashboard</a>
       <a href="http://">Add a Recipe</a>
     </div>
+    <div class="main">
+      <label for="email">Email: </label>
+      <textarea name="email" id="email" cols="15" rows="1">${Email}</textarea>
+      <label for="username">Username: </label>
+      <textarea name="username" id="username" cols="15" rows="1">
+${Username}</textarea
+      >
+      <label for="OldPassword">Old Password: </label>
+      <input
+        type="password"
+        name="OldPassword"
+        id="OldPassword"
+        placeholder="Enter your old password"
+      />
+      <label for="NewPassword">New Password: </label>
+      <input
+        type="password"
+        name="NewPassword"
+        id="NewPassword"
+        placeholder="Enter your new password"
+      />
+      <button id="delete-account-button">Delete Account</button>
+    </div>
   </body>
 </html>

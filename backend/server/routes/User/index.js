@@ -6,7 +6,6 @@ const router = express.Router();
 
 const LoginCheck = async (req, res, next) => {
   //once things are tested, remove console logs
-  console.log(req.session);
   if (req.session.user) {
     next();
   } else {

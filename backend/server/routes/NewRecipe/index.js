@@ -13,26 +13,22 @@ const LoginCheck = async (req, res, next) => {
   }
 };
 
-router.get("/get_newrecipe", LoginCheck, async (req, res) => {
+router.post("/get_newrecipe", async (req, res) => {
+  const { id } = req.body;
   const newrec = await NewRecipe.findOne({
     where: {
-      Name: req.body.Name,
+      id: id,
     },
   });
+  console.log(newrec);
   if (newrec) {
-    //this does not return anything to front end...
-    //once things are tested, remove console logs
-    //need a status and to send an object to front end, i.e. the recipe
-    console.log(newrec);
+    res.send(newrec);
   } else {
     //there needs to be an error status 400 and message here
   }
-  //this is written incorrectly
-  res.json({
-    message: "Recipe not found",
-  });
+  res.send("Recipe not found");
 });
-router.get("/get_all_id_recipe", LoginCheck, async (req, res) => {
+router.post("/get_all_id_recipe", LoginCheck, async (req, res) => {
   const findall = await NewRecipe.findAll({
     where: {
       UserId: req.session.user.id,

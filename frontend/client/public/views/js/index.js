@@ -67,7 +67,6 @@ const sendData = async () => {
   const Username = document.getElementById("SU-username").value;
   const Password = document.getElementById("SU-password").value;
   const PasswordRe = document.getElementById("SU-password2").value;
-  const emailChars = "@";
   if (
     Email.length !== 0 &&
     Username.length !== 0 &&
@@ -92,7 +91,6 @@ const sendData = async () => {
       }
     );
     const status = dataWeAreSending.status;
-    console.log(status);
   } else {
     alert("Please enter information in all fields");
   }
@@ -120,8 +118,6 @@ const findUser = async () => {
     if (status === 400) {
       alert("Username or password is incorrect, please try again");
     }
-  } else {
-    console.log("enter");
   }
 };
 

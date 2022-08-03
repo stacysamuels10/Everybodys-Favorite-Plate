@@ -11,7 +11,9 @@ const LoginCheck = async (req, res, next) => {
     res.status(500);
   }
 };
-
+router.get("/recipe", (req, res) => {
+  res.render("view-recipe");
+});
 router.post("/get_newrecipe", async (req, res) => {
   const { id } = req.body;
   const newrec = await NewRecipes.findOne({

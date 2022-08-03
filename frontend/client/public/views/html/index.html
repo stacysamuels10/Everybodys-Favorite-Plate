@@ -57,12 +57,26 @@
               />
               <label for="password">Password: </label>
               <input
-                type="text"
+                type="password"
                 class="sign-up"
                 name="password"
                 id="SU-password"
                 placeholder="Enter your password"
               />
+              <div class="validation">
+                <p id="validation-txt"></p>
+              </div>
+              <label for="password">Re-enter Password: </label>
+              <input
+                type="password"
+                class="sign-up"
+                name="password2"
+                id="SU-password2"
+                placeholder="Enter your password"
+              />
+              <div class="validation-match">
+                <p id="validation-pwd-txt"></p>
+              </div>
               <button type="submit" class="sign-up" id="sign-up-submit">
                 Submit
               </button>

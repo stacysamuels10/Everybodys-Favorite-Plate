@@ -11,8 +11,21 @@ const LoginCheck = async (req, res, next) => {
   }
 };
 
-router.get("/get_savedrecipe", (req, res) => {
-  res.send("got saved recipe");
+router.post("/get_savedrecipe", (req, res) => {
+  const {UserId, RecipeId} = req.body
+  const find = await findOne({
+    where:{
+      UserId: UserId,
+      RecipeId: RecipeId
+
+    }
+  })
+  if (find) {
+    res.send(find);
+  }
+  else{
+  res.send("Recipe not found");
+  }
 });
 
 router.get("get_all_savedrecipe"),

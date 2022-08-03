@@ -1,6 +1,6 @@
 const express = require("express");
-const { SavedRecipe, Users, NewRecipes } = require("../../../database/models");
-const bcrypt = require("bcrypt");
+const { SavedRecipe, Users, NewRecipes } = require("../../../database/models"); //we dont actually user Users since we are using session
+const bcrypt = require("bcrypt"); //i dont think we use this here?
 const session = require("express-session");
 const router = express.Router();
 
@@ -12,7 +12,8 @@ const LoginCheck = async (req, res, next) => {
   }
 };
 
-//what is this route supposed to do?
+//what is this route supposed to do? Is this getting all saved recipes or one saved recipe?
+//if it is for one recipe, we can use the get recipe by id in the new recipe js file so i dont think we need this. will leave it here just in case
 router.post("/get_savedrecipe", async (req, res) => {
   const { RecipeId } = req.body;
   console.log(RecipeId);
@@ -72,7 +73,7 @@ router.post("/add_savedrecipe", async (req, res) => {
         updatedAt: new Date(),
       };
       console.log(SavedRecipeInfo);
-      const AddSavedRecipe = await SavedRecipe.create(SavedRecipeInfo);
+      const AddSavedRecipe = await SavedRecipe.create(SavedRecipeInfo); //where are we using this variable?
       const countTimesSaved = await SavedRecipe.count({
         where: {
           NewRecipeId: id,
@@ -92,9 +93,8 @@ router.post("/add_savedrecipe", async (req, res) => {
         },
       });
       console.log(findNewRec);
-      res.status(200).send("Saved Recipe");
+      res.status(200).send("Saved Recipe"); //i think we can change this send to AddSavedRecipe to use the variable
     } else {
-      //this needs a status 400 error
       res.status(400).send("Recipe has already saved");
     }
   } catch (error) {
@@ -102,8 +102,6 @@ router.post("/add_savedrecipe", async (req, res) => {
   }
 });
 
-//personally, i dont think we need them to enter their password to unsave a recipe. i think it will be too cumbersome.
-//just have them validate their session that they are still logged in
 router.delete("/delete_savedrecipe", LoginCheck, async (req, res) => {
   const { NewRecipeId } = req.body;
   try {

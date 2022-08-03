@@ -112,7 +112,7 @@ const findUser = async () => {
     });
     const status = dataWeAreSending.status;
     if (status === 200) {
-      window.location.href = "home.html";
+      window.location.href = "/user/home";
     }
     if (status === 400) {
       alert("Username or password is incorrect, please try again");

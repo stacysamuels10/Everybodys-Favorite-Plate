@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Favorite Recipe</title>
+  </head>
+  <body>
+    <div class="nav-bar">
+      <a href="http://">Home</a>
+      <a href="http://">My Dashboard</a>
+      <a href="http://">Add a Recipe</a>
+    </div>
+    <div class="container">
+      <h1>${NewRecipes.name}</h1>
+      <img src="${NewRecipes.Picture}" />
+      <h3>Ingredients</h3>
+      <p>${NewRecipes.Ingredients}</p>
+      <h3>Instructions</h3>
+      <p>${NewRecipes.Instructions}</p>
+      <h3>Family Story</h3>
+      <p>${NewRecipes.FamilyStory}</p>
+      <button>Save Recipe</button>
+    </div>
+  </body>
+</html>

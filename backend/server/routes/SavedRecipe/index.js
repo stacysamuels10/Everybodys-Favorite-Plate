@@ -27,13 +27,6 @@ router.get("get_all_savedrecipe"),
 router.post("/add_savedrecipe", async (req, res) => {
   const { RecipeId } = req.body;
   try {
-    // const FindUser = await SavedRecipe.findOne({
-    //   where: {
-    //     // change to session
-    //     Userid: Userid
-
-    //   },
-    // });
     const FindRecipe = await SavedRecipe.findOne({
       where: {
         where: {

@@ -1,0 +1,22 @@
+body {
+  background-color: #eeeef0;
+  font-family: "Arsenal", sans-serif;
+  color: #110903;
+  margin: 10px;
+}
+
+.create-recipe {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input {
+  width: 300px;
+}
+textarea {
+  width: 300px;
+}
+button {
+  width: 100px;
+}

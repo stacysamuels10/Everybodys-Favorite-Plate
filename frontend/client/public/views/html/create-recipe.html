@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link defer rel="stylesheet" href="../css/style.css" />
+    <link defer rel="stylesheet" href="../css/create-recipe.css" />
     <script defer src="../js/create-recipe.js"></script>
     <title>Document</title>
   </head>
@@ -32,7 +32,9 @@
           Add your family's story. We want to hear why this recipe is special to
           you and yours to help bring us closer.
         </li>
+        <li>Please enter an image URL only</li>
       </ol>
+      <label for="recipe-name">Recipe Name: </label>
       <input
         type="text"
         class="create-recipe"
@@ -40,6 +42,7 @@
         id="recipe-name"
         placeholder="Recipe Name"
       />
+      <label for="recipe-image">Recipe Image URL: </label>
       <input
         type="text"
         class="create-recipe"
@@ -47,6 +50,7 @@
         id="recipe-image"
         placeholder="Enter the image URL for your recipe"
       />
+      <label for="ingredients">Ingredients: </label>
       <textarea
         name="ingredients"
         class="create-recipe"
@@ -55,6 +59,7 @@
         rows="10"
         placeholder="Enter the ingredients"
       ></textarea>
+      <label for="instructions">Instructions: </label>
       <textarea
         name="instructions"
         id="instructions"
@@ -63,6 +68,7 @@
         class="create-recipe"
         placeholder="Enter the instructions"
       ></textarea>
+      <label for="family-story">Your Recipe Story: </label>
       <textarea
         name="family-story"
         id="family-story"

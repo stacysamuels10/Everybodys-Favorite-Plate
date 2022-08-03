@@ -3,19 +3,21 @@ const createRecipeSubmit = document.getElementById("create-recipe-submit");
 const sendData = async () => {
   const Name = document.getElementById("recipe-name").value;
   const Picture = document.getElementById("recipe-image").value;
-  //const UserID = some sort of sessions id???? think this is on backend when button pressed
   const Ingredients = document.getElementById("ingredients").value;
   const Instructions = document.getElementById("instructions").value;
+  const FamilyStory = document.getElementById("family-story").value;
   if (
     Name.length !== 0 &&
     Ingredients.length !== 0 &&
-    Instructions.length !== 0
+    Instructions.length !== 0 &&
+    FamilyStory.length !== 0
   ) {
     const data = {
       Name: Name,
       Picture: Picture,
       Ingredients: Ingredients,
       Instructions: Instructions,
+      FamilyStory: FamilyStory,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -30,8 +32,14 @@ const sendData = async () => {
       }
     );
     const json = await dataWeAreSending.json();
+    const status = dataWeAreSending.status;
+    if (status === 200) {
+      alert("Thank you for adding your recipe!");
+    } else {
+      alert("Your recipe could not be added at this time. Please try again.");
+    }
   } else {
-    console.log("enter things");
+    alert("Please make sure all fields are completed");
     //need to make alerts to add something to missing spots
   }
 };

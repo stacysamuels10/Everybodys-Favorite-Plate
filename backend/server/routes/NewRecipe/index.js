@@ -8,12 +8,25 @@ const LoginCheck = async (req, res, next) => {
   if (req.session.user) {
     next();
   } else {
-    res.status(500);
+    res.render("home");
   }
 };
-router.get("/recipe", (req, res) => {
+router.get("/view-recipe", (req, res) => {
   res.render("view-recipe");
 });
+
+router.get("/create-recipe", (req, res) => {
+  res.render("create-recipe");
+});
+
+router.get("/update-recipe", (req, res) => {
+  res.render("update-recipe");
+});
+
+router.get("/view-recipe", (req, res) => {
+  res.render("view-recipe");
+});
+
 router.post("/get_newrecipe", async (req, res) => {
   const { id } = req.body;
   const newrec = await NewRecipes.findOne({

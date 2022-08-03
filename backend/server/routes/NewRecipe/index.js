@@ -8,7 +8,7 @@ const LoginCheck = async (req, res, next) => {
   if (req.session.user) {
     next();
   } else {
-    res.redirect("/user/login");
+    res.status(500);
   }
 };
 
@@ -28,6 +28,7 @@ router.post("/get_newrecipe", async (req, res) => {
   }
 });
 router.get("/get_all_id_recipe", LoginCheck, async (req, res) => {
+  console.log(req.session);
   const sessionid = req.session.user.id;
   const findall = await NewRecipes.findAll({
     where: {
@@ -78,8 +79,9 @@ router.post("/create_newrecipe", LoginCheck, async (req, res) => {
   }
 });
 
-router.put("/update_newrecipe", async (req, res) => {
-  const { Name, id, Picture, Ingredients, Instructions } = req.body;
+router.put("/update_newrecipe", LoginCheck, async (req, res) => {
+  const { Name, id, Picture, Ingredients, Instructions, FamilyStory } =
+    req.body;
   const findrecipe = await NewRecipes.findOne({
     where: {
       id: id,
@@ -93,6 +95,7 @@ router.put("/update_newrecipe", async (req, res) => {
         Ingredients: Ingredients,
         Instructions: Instructions,
         updateAt: new Date(),
+        FamilyStory: FamilyStory,
       });
       res.status(200).send("Recipe update");
     } else {
@@ -105,7 +108,7 @@ router.put("/update_newrecipe", async (req, res) => {
 router.delete("/delete_recipe", async (req, res) => {
   const { id } = req.body;
   const sessioncheck = req.session.user.id;
-  console.log("sesson check");
+
   console.log(sessioncheck);
   try {
     const findrecipe = await NewRecipes.findOne({
@@ -114,30 +117,46 @@ router.delete("/delete_recipe", async (req, res) => {
       },
     });
     const recipeuserid = findrecipe.UserId;
-    console.log(recipeuserid);
-    console.log("findrecioe");
-    console.log(findrecipe);
-    console.log(sessioncheck);
-    console.log(id);
+
     if (sessioncheck === recipeuserid) {
-      const findsavedrec = await SavedRecipe.findOne({
+      const findsavedrec = await SavedRecipe.findAll({
         where: {
-          UserId: sessioncheck,
           NewRecipeId: id,
         },
       });
+
       if (findsavedrec) {
-        SavedRecipe.destroy(findsavedrec);
+        SavedRecipe.destroy({
+          where: {
+            NewRecipeId: id,
+          },
+        });
+        findrecipe.destroy();
+        res.status(200).send(`Recipe has been deleted`);
+      } else {
+        console.log(error);
+        // res.status(400).send("Cant find recipe or not logged in");
       }
-      findrecipe.destroy();
-      res.status(200).send(`Recipe has been deleted`);
-    } else {
-      res.status(400).send("Cant find recipe or not logged in");
     }
   } catch (error) {
     console.log(error);
-    res.status(400).send("Wrong Username or password");
+    res.status(400).send(error);
   }
 });
-
+router.post("/test_columns", async (req, res) => {
+  const { id } = req.body;
+  console.log("afterid");
+  try {
+    console.log("try");
+    const getrecipeinfo = await NewRecipes.findOne({
+      where: {
+        id: id,
+      },
+    });
+    console.log(getrecipeinfo);
+    res.staus(200).send(getrecipeinfo);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
 module.exports = router;

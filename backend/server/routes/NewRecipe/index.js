@@ -1,7 +1,7 @@
 const express = require("express");
 const session = require("express-session");
-const { NewRecipes, Users, SavedRecipe } = require("../../../database/models"); //is it NewRecipes or NewRecipe????
-const bcrypt = require("bcrypt");
+const { NewRecipes, Users, SavedRecipe } = require("../../../database/models");
+const bcrypt = require("bcrypt"); //i dont think we use this here?
 const router = express.Router();
 
 const LoginCheck = async (req, res, next) => {
@@ -43,7 +43,7 @@ router.get("/get_all_id_recipe", LoginCheck, async (req, res) => {
 
 router.post("/create_newrecipe", async (req, res) => {
   console.log("create rec");
-  const { Name, Picture, Ingredients, Instructions } = req.body;
+  const { Name, Picture, Ingredients, Instructions, FamilyStory } = req.body;
   try {
     const userid = req.session.user.id;
     const findusernameid = await Users.findOne({
@@ -64,7 +64,7 @@ router.post("/create_newrecipe", async (req, res) => {
         updatedAt: new Date(),
         TimesSaved: 0,
       };
-      const CreateRecipe = await NewRecipes.create(RecipeInfo); //is it NewRecipe or NewRecipes????
+      const CreateRecipe = await NewRecipes.create(RecipeInfo); // need to user this variable in the .send
       res.status(200).send("Recipe created");
     } else {
       res.status(400).send("have to be logged in to upload recipe")({
@@ -107,7 +107,6 @@ router.delete("/delete_recipe", async (req, res) => {
   console.log(sessioncheck);
   try {
     const findrecipe = await NewRecipes.findOne({
-      //is it NewRecipes or NewRecipe???
       where: {
         id: id,
       },

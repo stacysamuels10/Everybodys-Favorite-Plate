@@ -11,6 +11,23 @@
   <body>
     <div class="create-recipe">
       <h1>Create a recipe</h1>
+      <h3>Tips for uploading a quality recipe:</h3>
+      <ol>
+        <li>
+          A descriptive title. "Grandma's Casserole" doesn't tell us much, but
+          "Grandma's Spinach and Cream Chicken Casserole" does!
+        </li>
+        <li>
+          Accurate Measurements. We know that, often, family recipes are "a
+          pinch of this" and "a bunch of that" but our advice is to take
+          measurements the next time you make it to update amounts so others can
+          enjoy it exactly as intended.
+        </li>
+        <li>
+          Add your family's story. We want to hear why this recipe is special to
+          you and yours to help bring us closer.
+        </li>
+      </ol>
       <input
         type="text"
         class="create-recipe"
@@ -40,6 +57,14 @@
         rows="10"
         class="create-recipe"
         placeholder="Enter the instructions"
+      ></textarea>
+      <textarea
+        name="family-story"
+        id="family-story"
+        cols="30"
+        rows="10"
+        class="create-recipe"
+        placeholder="Tell us more about this recipe"
       ></textarea>
       <button type="submit" class="create-recipe" id="create-recipe-submit">
         Submit

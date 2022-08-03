@@ -44,7 +44,7 @@ router.get("/test", (req, res) => {
   res.send("test worked");
 });
 router.post("/create_newrecipe", LoginCheck, async (req, res) => {
-  const { Name, Picture, Ingredients, Instructions } = req.body;
+  const { Name, Picture, Ingredients, Instructions, FamilyStory } = req.body;
   try {
     const findusernameid = await Users.findOne({
       where: {
@@ -64,6 +64,7 @@ router.post("/create_newrecipe", LoginCheck, async (req, res) => {
         Picture: Picture,
         Ingredients: Ingredients,
         Instructions: Instructions,
+        FamilyStory: FamilyStory,
         createdAt: new Date(),
         updatedAt: new Date(),
       };

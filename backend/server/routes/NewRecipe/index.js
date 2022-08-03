@@ -59,6 +59,7 @@ router.post("/create_newrecipe", async (req, res) => {
         Picture: Picture,
         Ingredients: Ingredients,
         Instructions: Instructions,
+        FamilyStory: FamilyStory,
         createdAt: new Date(),
         updatedAt: new Date(),
         TimesSaved: 0,

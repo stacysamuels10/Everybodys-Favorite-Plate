@@ -3,62 +3,94 @@ const signInSubmit = document.getElementById("sign-in-submit");
 //const changePasswordSubmit = document.getElementById("UP-submit");
 //const deleteSubmit = document.getElementById("DEL-submit");
 
+const validateEmail = () => {
+  const validationField1 = document.getElementById("validation-email-txt");
+  const emailError = [];
+  const validEmail =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const Email = document.getElementById("SU-email").value;
+  if (!validEmail.test(Email)) {
+    emailError.push("You have entered an invalid email address!");
+  }
+  if (emailError.length > 0) {
+    validationField1.innerHTML = emailError.join(" ");
+  }
+  validationField1.innerHTML = emailError.join(" ");
+};
+
+const validatePassword = () => {
+  const validationField2 = document.getElementById("validation-txt");
+  const Password = document.getElementById("SU-password").value;
+  const errors = [];
+  const specialChars = /[~`!@#$%&*+=';/{}|:<>?()_]/;
+  const capitalLetter = /[ABCDEFGHIJKLMNOPQRSTUVWXYZ]/;
+  const lowercaseLetter = /[abcdefghijklmnopqrstuvwxyz]/;
+  const number = /[123456780]/;
+  if (Password.length < 8) {
+    errors.push("Password must be at least 8 characters");
+  }
+  if (!specialChars.test(Password)) {
+    errors.push(
+      "Please use at least one special character /[~`!@#$%&*+=';/{}|:<>?()_]"
+    );
+  }
+  if (!capitalLetter.test(Password)) {
+    errors.push("Please use at least 1 capital letter");
+  }
+  if (!lowercaseLetter.test(Password)) {
+    errors.push("Please use at least 1 lowercase letter");
+  }
+  if (!number.test(Password)) {
+    errors.push("Please user at least 1 number");
+  }
+  if (errors.length > 0) {
+    validationField2.innerHTML = errors.join(" ");
+    return false;
+  }
+  validationField2.innerHTML = errors.join(" ");
+  return true;
+};
+
+const passwordMatch = () => {
+  const match = [];
+  const validationField3 = document.getElementById("validation-pwd-txt");
+  const Password = document.getElementById("SU-password").value;
+  const PasswordRe = document.getElementById("SU-password2").value;
+  if (Password !== PasswordRe) {
+    match.push("Please make sure you passwords match");
+  }
+  validationField3.innerHTML = match.join("");
+};
+
 const sendData = async () => {
   const Email = document.getElementById("SU-email").value;
   const Username = document.getElementById("SU-username").value;
   const Password = document.getElementById("SU-password").value;
   const PasswordRe = document.getElementById("SU-password2").value;
-  const validationField = document.getElementById("validation-txt");
-  const validationField2 = document.getElementById("validation-pwd-txt");
-  const errors = [];
-  const match = [];
-  const emailChars = "@";
-  const specialChars = "/[~`!@#$%&*+=';/{}|:<>?()_]";
-  const capitalLetter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const lowercaseLetter = "abcdefghijklmnopqrstuvwxyz";
   if (
     Email.length !== 0 &&
     Username.length !== 0 &&
     Password.length !== 0 &&
     PasswordRe.length !== 0
   ) {
-    if (Password.length > 8) {
-      if (Password === PasswordRe) {
-        if (Email.includes(emailChars)) {
-          if (Password.includes(specialChars)) {
-            const data = {
-              Email: Email,
-              Username: Username,
-              Password: Password,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            };
-            const dataWeAreSending = await fetch(
-              "http://localhost:3000/user/create_user",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-              }
-            );
-            const json = await dataWeAreSending.json();
-            console.log(json);
-          } else {
-            errors.push(
-              "Please use at least one special characters in your password /[~`!@#$%&*+=';/{}|:<>?()_]"
-            );
-          }
-        } else {
-          alert("Please enter a valid email");
-        }
-      } else {
-        match.push("Please make sure you passwords match");
+    const data = {
+      Email: Email,
+      Username: Username,
+      Password: Password,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    const dataWeAreSending = await fetch(
+      "http://localhost:3000/user/create_user",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       }
-    } else {
-      errors.push("Your password must be at least 8 characters");
-    }
+    );
+    const status = dataWeAreSending.status;
   } else {
     alert("Please enter information in all fields");
   }
@@ -79,15 +111,13 @@ const findUser = async () => {
       },
       body: JSON.stringify(data),
     });
-    const status = await dataWeAreSending.status;
+    const status = dataWeAreSending.status;
     if (status === 200) {
       window.location.href = "home.html";
     }
     if (status === 400) {
       alert("Username or password is incorrect, please try again");
     }
-  } else {
-    console.log("enter");
   }
 };
 
@@ -154,13 +184,3 @@ signInSubmit.onclick = () => {
   console.log("i work now");
   findUser();
 };
-
-// changePasswordSubmit.onclick = () => {
-//   console.log("hello I am working");
-//   updatePassword();
-// };
-
-// deleteSubmit.onclick = () => {
-//   console.log("delete is working");
-//   deleteUser();
-// };

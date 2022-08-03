@@ -46,7 +46,11 @@
                 name="email"
                 id="SU-email"
                 placeholder="Enter your email"
+                onkeyup="validateEmail();"
               />
+              <div class="validation">
+                <p id="validation-email-txt"></p>
+              </div>
               <label for="username">Username: </label>
               <input
                 type="text"
@@ -61,6 +65,7 @@
                 class="sign-up"
                 name="password"
                 id="SU-password"
+                onkeyup="validatePassword();"
                 placeholder="Enter your password"
               />
               <div class="validation">
@@ -72,6 +77,7 @@
                 class="sign-up"
                 name="password2"
                 id="SU-password2"
+                onkeyup="passwordMatch();"
                 placeholder="Enter your password"
               />
               <div class="validation-match">
@@ -96,7 +102,7 @@
               />
               <label for="Password">Password: </label>
               <input
-                type="text"
+                type="password"
                 class="sign-in"
                 name="Password"
                 id="SI-password"
@@ -105,6 +111,7 @@
               <button type="submit" class="sign-in" id="sign-in-submit">
                 Submit
               </button>
+              <a href="http://">Sign in as guest</a>
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ const store = new SequelizeStore({
   db: models.sequelize,
 });
 
-// app.use(express.static(""))
+app.use(express.static("./frontend/client/public"));
 app.use(
   session({
     secret: "secret",
@@ -32,14 +32,14 @@ store.sync();
 
 app.use(express.json());
 app.use(cors());
+app.engine("html", es6Renderer);
+app.set("views", "./frontend/client/public/html");
+app.set("view engine", "html");
 app.use("/user", UserRoutes);
 app.use("/new_recipe", NewRecipe);
 app.use("/saved_recipe", SavedRecipe);
 app.use("/sorting", SortingRoutes);
 app.use("/", home);
-app.engine("html", es6Renderer);
-app.set("views", "./frontend/client/public/views/html");
-app.set("view engine", "html");
 
 const CheckLogin = async (req, res, next) => {
   if (req.sesion.user) {

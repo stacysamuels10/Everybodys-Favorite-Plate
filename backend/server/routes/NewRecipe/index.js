@@ -41,11 +41,12 @@ router.get("/get_all_id_recipe", LoginCheck, async (req, res) => {
   }
 });
 
-router.post("/create_newrecipe", async (req, res) => {
+router.post("/create_newrecipe", LoginCheck, async (req, res) => {
   console.log("create rec");
   const { Name, Picture, Ingredients, Instructions, FamilyStory } = req.body;
   try {
     const userid = req.session.user.id;
+    console.log(userid);
     const findusernameid = await Users.findOne({
       where: {
         id: userid,
@@ -65,6 +66,7 @@ router.post("/create_newrecipe", async (req, res) => {
         TimesSaved: 0,
       };
       const CreateRecipe = await NewRecipes.create(RecipeInfo); // need to user this variable in the .send
+      console.log(CreateRecipe);
       res.status(200).send("Recipe created");
     } else {
       res.status(400).send("have to be logged in to upload recipe")({

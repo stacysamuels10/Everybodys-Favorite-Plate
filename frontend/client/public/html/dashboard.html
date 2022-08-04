@@ -4,30 +4,48 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="../js/dashboard.js"></script>
     <title>Your Dashboard</title>
   </head>
   <body>
     <div class="nav-bar">
       <a href="http://localhost:3000/user/home">Home</a>
       <a href="http://localhost:3000/saved_recipe/dashboard">My Dashboard</a>
-      <a href="http://localhost:3000/newrecipe/create-recipe">Add a Recipe</a>
+      <a href="http://localhost:3000/new_recipe/create-recipe">Add a Recipe</a>
     </div>
     <div class="container">
       <div class="account-info">
         <h3>Username:</h3>
         <h3>${title.Username}</h3>
-        <button>Edit Profile</button>
+        <button id="edit-profile">Edit Profile</button>
       </div>
       <div class="saved-recipes">
-        <div class="recipe-card">
-          <div class="recipe-name">Name</div>
-          <div class="recipe-img">
-            <a href=""
-              ><img
-                src="https://media.istockphoto.com/vectors/meal-breaks-vector-line-icon-simple-thin-line-icon-premium-quality-vector-id1267161539?k=20&m=1267161539&s=612x612&w=0&h=Ohn7N00XfmTOoGhEQHLZ6QlWLo-9ln7yrWRPAKyYGcA="
-                alt="HTML tutorial"
-                style="width: 100px; height: 80px"
-            /></a>
+        <div class="main">
+          <h2>Most Recent Recipes:</h2>
+          <div class="recipes">
+            ${recipe.map(NewRecipe => `
+            <div class="recipe-card">
+              <h2>${NewRecipe.Name}</h2>
+              <div class="recipe-img">
+                <a
+                  href="http://localhost:3000/new_recipe/view-recipe/${NewRecipe.id}"
+                  ><img
+                    src="${NewRecipe.Picture}"
+                    id="${NewRecipe.id}"
+                    style="width: 100px; height: 80px"
+                    onerror="this.src='../css/logo.png'"
+                    ;
+                /></a>
+              </div>
+              <input
+                type="button"
+                class="unsave-recipe"
+                id="${NewRecipe.id}"
+                value="Unsave Recipe"
+                onclick="runPostRoute(${NewRecipe.id})"
+              />
+            </div>
+            `).join('')}
           </div>
         </div>
       </div>

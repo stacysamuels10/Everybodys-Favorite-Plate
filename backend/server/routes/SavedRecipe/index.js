@@ -78,17 +78,12 @@ router.get("/get_all_savedrecipe", LoginCheck, async (req, res) => {
 
 router.post("/add_savedrecipe/:id", async (req, res) => {
   try {
-    console.log("try");
-    console.log(req.params.id);
-    console.log(req.session.user.id);
     const FindRecipe = await SavedRecipe.findOne({
       where: {
         UserId: req.session.user.id,
         NewRecipeId: req.params.id,
       },
     });
-    console.log("before find recipe");
-    console.log(FindRecipe);
     if (!FindRecipe) {
       const SavedRecipeInfo = {
         UserId: req.session.user.id,
@@ -96,31 +91,10 @@ router.post("/add_savedrecipe/:id", async (req, res) => {
         createAt: new Date(),
         updatedAt: new Date(),
       };
-      console.log(SavedRecipeInfo);
-      const AddSavedRecipe = await SavedRecipe.create(SavedRecipeInfo); //where are we using this variable?
-      const countTimesSaved = await SavedRecipe.count({
-        where: {
-          NewRecipeId: id,
-        },
-      });
-      console.log("cts", countTimesSaved);
-      const findNewRec = await NewRecipes.findOne({
-        where: {
-          id: id,
-        },
-      });
-      console.log(findNewRec);
-      console.log("timessave");
-      console.log(countTimesSaved);
-      await findNewRec.update({
-        where: {
-          TimesSaved: countTimesSaved,
-        },
-      });
-      console.log(findNewRec);
-      res.status(200).send("Saved Recipe"); //i think we can change this send to AddSavedRecipe to use the variable
+      const AddSavedRecipe = await SavedRecipe.create(SavedRecipeInfo);
+      res.status(200).send("Saved Recipe");
     } else {
-      res.status(400).send("Recipe has already saved");
+      res.status(500).send("Recipe has already saved");
     }
   } catch (error) {
     res.status(400).send(error.message);

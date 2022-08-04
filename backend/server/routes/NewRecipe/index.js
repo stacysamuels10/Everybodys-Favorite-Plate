@@ -23,10 +23,6 @@ router.get("/update-recipe", (req, res) => {
   res.render("update-recipe");
 });
 
-router.get("/view-recipe", (req, res) => {
-  res.render("view-recipe");
-});
-
 router.post("/get_newrecipe", async (req, res) => {
   const { id } = req.body;
   const newrec = await NewRecipes.findOne({

@@ -15,8 +15,7 @@ const LoginCheck = async (req, res, next) => {
 router.get("/home", async (req, res) => {
   try {
     const top5 = await NewRecipes.findAll({
-      order: [["TimesSaved", "DESC"]],
-      limit: 5,
+      order: [["createdAt", "DESC"]],
     });
     res.render("home", {
       locals: { title: top5 },

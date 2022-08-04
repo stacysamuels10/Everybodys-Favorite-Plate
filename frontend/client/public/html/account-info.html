@@ -10,30 +10,56 @@
   <body>
     <div class="nav-bar">
       <a href="http://localhost:3000/user/home">Home</a>
-      <a href="http://localhost:3000/saved_recipe/dashboard">My Dashboard</a>
+      <a href="http://localhost:3000/saved_recipe/dashboard"
+        >My Saved Recipes</a
+      >
       <a href="http://localhost:3000/new_recipe/create-recipe">Add a Recipe</a>
+      <a href="http://localhost:3000/user/account-info">My Account</a>
+      <a href="">Logout</a>
     </div>
     <div class="main">
       <div class="account-info">
+        <h3>Email: ${title.Email}</h3>
+        <h3>Username: ${title.Username}</h3>
         <button id="update-account">Update Account</button>
-        <h3>Email: ${user.Email}</h3>
-        <h3>Username: ${user.Username}</h3>
         <button id="delete-account">Delete Account</button>
         <div id="delete-account-div" class="delete-account-div"></div>
       </div>
       <div class="recipes-created">
-        <div class="recipe-card">
-          <button>Edit Recipe</button>
-          <div class="recipe-name">Name</div>
-          <div class="recipe-img">
-            <a href=""
-              ><img
-                src="https://media.istockphoto.com/vectors/meal-breaks-vector-line-icon-simple-thin-line-icon-premium-quality-vector-id1267161539?k=20&m=1267161539&s=612x612&w=0&h=Ohn7N00XfmTOoGhEQHLZ6QlWLo-9ln7yrWRPAKyYGcA="
-                alt="HTML tutorial"
-                style="width: 100px; height: 80px"
-            /></a>
+        <div class="main">
+          <h2>Your Recipes:</h2>
+          <div class="recipes">
+            ${recipe.map(NewRecipe => `
+            <div class="recipe-card">
+              <h2>${NewRecipe.Name}</h2>
+              <div class="recipe-img">
+                <a
+                  href="http://localhost:3000/new_recipe/view-recipe/${NewRecipe.id}"
+                  ><img
+                    src="${NewRecipe.Picture}"
+                    id="${NewRecipe.id}"
+                    style="width: 100px; height: 80px"
+                    onerror="this.src='../css/logo.png'"
+                    ;
+                /></a>
+              </div>
+              <input
+                type="button"
+                class="edit-recipe"
+                id="${NewRecipe.id}"
+                value="Edit Recipe"
+                onclick="deleteRecipe(${NewRecipe.id})"
+              />
+              <input
+                type="button"
+                class="delete-recipe"
+                id="${NewRecipe.id}"
+                value="Delete Recipe"
+                onclick="deleteRecipe(${NewRecipe.id})"
+              />
+            </div>
+            `).join('')}
           </div>
-          <button>Delete Recipe</button>
         </div>
       </div>
     </div>

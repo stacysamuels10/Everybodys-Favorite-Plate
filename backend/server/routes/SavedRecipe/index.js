@@ -109,13 +109,13 @@ router.post("/add_savedrecipe/:id", async (req, res) => {
   }
 });
 
-router.delete("/delete_savedrecipe", LoginCheck, async (req, res) => {
-  const { NewRecipeId } = req.body;
+router.delete("/delete_savedrecipe/:id", LoginCheck, async (req, res) => {
   try {
+    console.log("i am reading this route");
     const findRecipe = await SavedRecipe.findOne({
       where: {
         UserId: req.session.user.id,
-        NewRecipeId: NewRecipeId,
+        NewRecipeId: req.params.id,
       },
     });
     console.log(findRecipe);

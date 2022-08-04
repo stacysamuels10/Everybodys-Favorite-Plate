@@ -25,18 +25,36 @@ router.get("/home", async (req, res) => {
   }
 });
 
-router.get("/account-info", (req, res) => {
+router.get("/account-info", async (req, res) => {
   try {
-    const { id, Email, Username, Password } = req.session.user;
+    let array = [];
     const user = {
-      id: id,
-      Email: Email,
-      Username: Username,
-      Password: Password,
+      id: req.session.user.id,
+      Email: req.session.user.Email,
+      Username: req.session.user.Username,
+      Password: req.session.user.Password,
     };
-    res.render("account-info", {
-      locals: { title: user },
+    const findall = await NewRecipes.findAll({
+      where: {
+        UserId: req.session.user.id,
+      },
     });
+    if (findall) {
+      for (let i = 0; i < findall.length; i++) {
+        const findRecipe = await NewRecipes.findOne({
+          where: {
+            id: findall[i].dataValues.id,
+          },
+        });
+        array.push(findRecipe);
+      }
+      res.status(200).render("account-info", {
+        locals: {
+          title: user,
+          recipe: array,
+        },
+      });
+    }
   } catch (error) {
     res.status(400).send(error);
   }

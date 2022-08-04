@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="../../js/update-recipe.js"></script>
     <title>Update Recipe</title>
   </head>
   <body>
@@ -24,7 +25,7 @@
         cols="30"
         rows="1"
       >
-${Recipe Name}</textarea
+${update.Name}</textarea
       >
       <textarea
         name="recipe-image"
@@ -33,7 +34,7 @@ ${Recipe Name}</textarea
         cols="30"
         rows="1"
       >
-${Picture}</textarea
+${update.Picture}</textarea
       >
       <textarea
         name="ingredients"
@@ -42,7 +43,7 @@ ${Picture}</textarea
         cols="30"
         rows="10"
       >
-${Recipe Ingredients}</textarea
+${update.Ingredients}</textarea
       >
       <textarea
         name="instructions"
@@ -51,7 +52,7 @@ ${Recipe Ingredients}</textarea
         rows="10"
         class="create-recipe"
       >
-${Recipe Ingredients}</textarea
+${update.Instructions}</textarea
       >
       <textarea
         name="family-story"
@@ -60,11 +61,14 @@ ${Recipe Ingredients}</textarea
         rows="10"
         class="create-recipe"
       >
-${Family Story}</textarea
-      >
-      <button type="submit" class="create-recipe" id="create-recipe-submit">
-        Submit
-      </button>
+${update.FamilyStory}</textarea
+      ><input
+        type="button"
+        class="${update.id}"
+        value="Update Recipe"
+        id="update-recipe"
+        onclick="bringOverId(${update.id})"
+      />
     </div>
   </body>
 </html>

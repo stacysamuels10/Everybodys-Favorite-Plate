@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="../../js/home.js"></script>
     <title>The Favorite Recipe</title>
   </head>
   <body>
@@ -13,15 +14,25 @@
       <a href="localhost:3000/newrecipe/create-recipe">Add a Recipe</a>
     </div>
     <div class="container">
-      <h1>${NewRecipes.name}</h1>
-      <img src="${NewRecipes.Picture}" />
+      <h1>${title.Name}</h1>
+      <img
+        src="${title.Picture}"
+        onerror="this.onerror=null;this.src='../../css/logo.png'"
+        ;
+      />
       <h3>Ingredients</h3>
-      <p>${NewRecipes.Ingredients}</p>
+      <p>${title.Ingredients}</p>
       <h3>Instructions</h3>
-      <p>${NewRecipes.Instructions}</p>
+      <p>${title.Instructions}</p>
       <h3>Family Story</h3>
-      <p>${NewRecipes.FamilyStory}</p>
-      <button>Save Recipe</button>
+      <p>${title.FamilyStory}</p>
+      <input
+        type="button"
+        class="save-recipe"
+        id="${title.id}"
+        value="Save Recipe"
+        onclick="runPostRoute(${title.id})"
+      />
     </div>
   </body>
 </html>

@@ -15,11 +15,9 @@ const LoginCheck = async (req, res, next) => {
 router.get("/home", async (req, res) => {
   try {
     const top5 = await NewRecipes.findAll({
-      where: {
-        id: 37,
-      },
+      order: [["TimesSaved", "DESC"]],
+      limit: 5,
     });
-    console.log("TOP5", top5);
     res.render("home", {
       locals: { title: top5 },
     });
@@ -29,7 +27,20 @@ router.get("/home", async (req, res) => {
 });
 
 router.get("/account-info", (req, res) => {
-  res.render("account-info");
+  try {
+    const { id, Email, Username, Password } = req.session.user;
+    const user = {
+      id: id,
+      Email: Email,
+      Username: Username,
+      Password: Password,
+    };
+    res.render("account-info", {
+      locals: { title: user },
+    });
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 router.get("/update-account", (req, res) => {
   res.render("update-account");
@@ -53,24 +64,13 @@ router.post("/login", async (req, res) => {
         Username: Username,
       },
     });
-    console.log(finduser);
-    console.log("beforebcrypt");
     const validatePassword = await bcrypt.compare(
       Password,
       finduser.dataValues.Password
     );
-    console.log(finduser.Password);
-    console.log(validatePassword);
     if (validatePassword) {
-      console.log("validated");
       req.session.user = finduser;
-      console.log(req.session);
-      console.log(req.session.user);
-      console.log(req.session.user.Email);
-      console.log(req.session.user.Password);
-
       res.status(200).send("logged in and sessionfound");
-      // res.redirect
     } else {
       res.status(400).send("Username or Password Incorrect");
     }
@@ -83,8 +83,6 @@ router.post("/create_user", async (req, res) => {
   const { Email, Username, Password } = req.body;
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(Password, salt);
-  console.log(`hashedpassword ${hashPassword}`);
-  console.log("line 11");
   try {
     const FindUsername = await Users.findOne({
       where: {
@@ -105,7 +103,6 @@ router.post("/create_user", async (req, res) => {
         updatedAt: new Date(),
       };
       const CreateUser = await Users.create(UserInfo);
-      console.log(CreateUser);
       res.status(200).send(CreateUser);
     } else {
       res.status(400).send("Username or Email already exist.");
@@ -158,8 +155,6 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
         Username: Username,
       },
     });
-    console.log(req.session.user);
-    console.log(req.session.user.Password);
     const validatePassword = await bcrypt.compare(
       Password,
       req.session.user.Password

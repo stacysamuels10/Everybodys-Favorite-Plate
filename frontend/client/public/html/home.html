@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="../js/home.js"></script>
     <title>Home</title>
   </head>
   <body>
@@ -31,8 +32,8 @@
       </div>
       <div class="main">
         <div class="recipes">
+          ${title.map(NewRecipe => `
           <div class="recipe-card">
-            ${title.map(NewRecipe => `
             <h2>${NewRecipe.Name}</h2>
             <div class="recipe-img">
               <a href=""
@@ -41,69 +42,15 @@
                   style="width: 100px; height: 80px"
               /></a>
             </div>
-            <button id="${NewRecipe.id}">Save Recipe</button>
-            `).join('')}
+            <input
+              type="button"
+              class="save-recipe"
+              id="${NewRecipe.id}"
+              value="Save Recipe"
+              onclick="runPostRoute(${NewRecipe.id})"
+            />
           </div>
-          <div class="recipe-card">
-            <div class="recipe-name">Name</div>
-            <div class="recipe-img">
-              <a href=""
-                ><img
-                  src="https://media.istockphoto.com/vectors/meal-breaks-vector-line-icon-simple-thin-line-icon-premium-quality-vector-id1267161539?k=20&m=1267161539&s=612x612&w=0&h=Ohn7N00XfmTOoGhEQHLZ6QlWLo-9ln7yrWRPAKyYGcA="
-                  alt="HTML tutorial"
-                  style="width: 100px; height: 80px"
-              /></a>
-            </div>
-            <button>Save Recipe</button>
-          </div>
-          <div class="recipe-card">
-            <div class="recipe-name">Name</div>
-            <div class="recipe-img">
-              <a href=""
-                ><img
-                  src="https://media.istockphoto.com/vectors/meal-breaks-vector-line-icon-simple-thin-line-icon-premium-quality-vector-id1267161539?k=20&m=1267161539&s=612x612&w=0&h=Ohn7N00XfmTOoGhEQHLZ6QlWLo-9ln7yrWRPAKyYGcA="
-                  alt="HTML tutorial"
-                  style="width: 100px; height: 80px"
-              /></a>
-            </div>
-            <button>Save Recipe</button>
-          </div>
-          <div class="recipe-card">
-            <div class="recipe-name">Name</div>
-            <div class="recipe-img">
-              <a href=""
-                ><img
-                  src="https://media.istockphoto.com/vectors/meal-breaks-vector-line-icon-simple-thin-line-icon-premium-quality-vector-id1267161539?k=20&m=1267161539&s=612x612&w=0&h=Ohn7N00XfmTOoGhEQHLZ6QlWLo-9ln7yrWRPAKyYGcA="
-                  alt="HTML tutorial"
-                  style="width: 100px; height: 80px"
-              /></a>
-            </div>
-            <button>Save Recipe</button>
-          </div>
-          <div class="recipe-card">
-            <div class="recipe-name">Name</div>
-            <div class="recipe-img">
-              <a href=""
-                ><img
-                  src="https://media.istockphoto.com/vectors/meal-breaks-vector-line-icon-simple-thin-line-icon-premium-quality-vector-id1267161539?k=20&m=1267161539&s=612x612&w=0&h=Ohn7N00XfmTOoGhEQHLZ6QlWLo-9ln7yrWRPAKyYGcA="
-                  alt="HTML tutorial"
-                  style="width: 100px; height: 80px"
-              /></a>
-            </div>
-            <button>Save Recipe</button>
-          </div>
-          <div class="recipe-card">
-            <div class="recipe-name">Name</div>
-            <div class="recipe-img">
-              <a href=""
-                ><img
-                  src="https://media.istockphoto.com/vectors/meal-breaks-vector-line-icon-simple-thin-line-icon-premium-quality-vector-id1267161539?k=20&m=1267161539&s=612x612&w=0&h=Ohn7N00XfmTOoGhEQHLZ6QlWLo-9ln7yrWRPAKyYGcA="
-                  alt="HTML tutorial"
-                  style="width: 100px; height: 80px"
-              /></a>
-            </div>
-            <button>Save Recipe</button>
-          </div>
+          `).join('')}
         </div>
       </div>
     </div>

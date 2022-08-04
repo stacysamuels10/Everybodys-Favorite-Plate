@@ -14,6 +14,7 @@ const LoginCheck = async (req, res, next) => {
 
 router.get("/dashboard", async (req, res) => {
   try {
+    let array = [];
     const { Email, Username, id } = req.session.user;
     const finduser = await Users.findOne({
       where: {
@@ -25,12 +26,20 @@ router.get("/dashboard", async (req, res) => {
     const findall = await SavedRecipe.findAll({
       where: { UserId: finduser.id },
     });
-    console.log(findall);
     if (findall) {
+      for (let i = 0; i < findall.length; i++) {
+        const findRecipe = await NewRecipes.findOne({
+          where: {
+            id: findall[i].dataValues.NewRecipeId,
+          },
+        });
+        array.push(findRecipe);
+      }
       res.render("dashboard", {
         locals: {
           title: finduser,
-          recipe: findall,
+          saverecipe: findall,
+          recipe: array,
         },
       });
     }

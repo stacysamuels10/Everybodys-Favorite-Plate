@@ -3,8 +3,7 @@ const deleteAccount = document.getElementById("delete-account");
 const deleteAccountDiv = document.getElementById("delete-account-div");
 
 const accountEditRedirect = () => {
-  window.location.href =
-    "http://127.0.0.1:5500/frontend/client/public/views/html/update-account.html";
+  window.location.href = "http://localhost:3000/user/update-account";
 };
 accountUpdate.onclick = () => {
   accountEditRedirect();

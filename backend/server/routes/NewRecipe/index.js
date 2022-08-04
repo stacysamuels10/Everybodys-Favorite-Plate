@@ -38,21 +38,6 @@ router.get("/update-recipe", (req, res) => {
   res.render("update-recipe");
 });
 
-router.post("/get_newrecipe", async (req, res) => {
-  const { id } = req.body;
-  const newrec = await NewRecipes.findOne({
-    where: {
-      id: id,
-    },
-  });
-  console.log(newrec);
-  if (newrec) {
-    console.log(newrec);
-    res.status(200).send(newrec);
-  } else {
-    res.status(400).send("Recipe not found");
-  }
-});
 router.get("/get_all_id_recipe", LoginCheck, async (req, res) => {
   console.log(req.session);
   const sessionid = req.session.user.id;

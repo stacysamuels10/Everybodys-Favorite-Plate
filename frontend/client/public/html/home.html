@@ -31,15 +31,19 @@
         </p>
       </div>
       <div class="main">
+        <h2>Most Recent Recipes:</h2>
         <div class="recipes">
           ${title.map(NewRecipe => `
           <div class="recipe-card">
             <h2>${NewRecipe.Name}</h2>
             <div class="recipe-img">
-              <a href=""
+              <a href="http://localhost:3000/new_recipe/view-recipe"
                 ><img
                   src="${NewRecipe.Picture}"
+                  id="${NewRecipe.id}"
                   style="width: 100px; height: 80px"
+                  onerror="this.src='../css/logo.png'"
+                  ;
               /></a>
             </div>
             <input

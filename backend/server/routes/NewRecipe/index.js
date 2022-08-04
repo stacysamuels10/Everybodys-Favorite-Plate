@@ -11,8 +11,23 @@ const LoginCheck = async (req, res, next) => {
     res.render("home");
   }
 };
-router.get("/view-recipe", (req, res) => {
-  res.render("view-recipe");
+router.get("/view-recipe/:id", LoginCheck, async (req, res) => {
+  try {
+    const findRecipe = await NewRecipes.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (findRecipe) {
+      res.status(200).render("view-recipe", {
+        locals: {
+          title: findRecipe,
+        },
+      });
+    }
+  } catch (error) {
+    res.status(400).send("Saved Recipe does not exist");
+  }
 });
 
 router.get("/create-recipe", (req, res) => {

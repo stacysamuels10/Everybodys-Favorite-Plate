@@ -1,5 +1,4 @@
 const runPostRoute = async (id) => {
-  console.log(id);
   const dataWeAreSending = await fetch(
     `http://localhost:3000/saved_recipe/add_savedrecipe/${id}`,
     {

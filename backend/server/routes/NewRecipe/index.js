@@ -12,12 +12,14 @@ const LoginCheck = async (req, res, next) => {
   }
 };
 router.get("/view-recipe/:id", LoginCheck, async (req, res) => {
+  console.log(req.params.id);
   try {
     const findRecipe = await NewRecipes.findOne({
       where: {
         id: req.params.id,
       },
     });
+    console.log(findRecipe);
     if (findRecipe) {
       res.status(200).render("view-recipe", {
         locals: {
@@ -34,8 +36,25 @@ router.get("/create-recipe", (req, res) => {
   res.render("create-recipe");
 });
 
-router.get("/update-recipe", (req, res) => {
-  res.render("update-recipe");
+router.get("");
+
+router.get("/update-recipe/:id", async (req, res) => {
+  try {
+    const findRecipe = await NewRecipes.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (findRecipe) {
+      res.status(200).render("update-recipe", {
+        locals: {
+          update: findRecipe,
+        },
+      });
+    }
+  } catch (error) {
+    res.status(400).send("Recipe does not exist");
+  }
 });
 
 router.get("/get_all_id_recipe", LoginCheck, async (req, res) => {
@@ -88,15 +107,18 @@ router.post("/create_newrecipe", LoginCheck, async (req, res) => {
   }
 });
 
-router.put("/update_newrecipe", LoginCheck, async (req, res) => {
-  const { Name, id, Picture, Ingredients, Instructions, FamilyStory } =
-    req.body;
+router.put("/update_newrecipe/:id", async (req, res) => {
+  console.log("req", req.params.id);
+  const { Name, Picture, Ingredients, Instructions, FamilyStory } = req.body;
+  console.log("body ", req.body);
   const findrecipe = await NewRecipes.findOne({
     where: {
-      id: id,
+      id: req.params.id,
     },
   });
   try {
+    const recipeuserid = findrecipe.UserId;
+    //if (req.session.user.id === recipeuserid) {
     if (findrecipe) {
       findrecipe.update({
         Name: Name,
@@ -106,10 +128,10 @@ router.put("/update_newrecipe", LoginCheck, async (req, res) => {
         updateAt: new Date(),
         FamilyStory: FamilyStory,
       });
-      res.status(200).send("Recipe update");
-    } else {
-      res.status(400).send("Recipe not found");
+      console.log(findrecipe.Name);
+      res.status(200).send("this is working");
     }
+    //}
   } catch (error) {
     res.status(400).send(error);
   }

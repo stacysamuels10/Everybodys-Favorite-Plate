@@ -9,6 +9,10 @@ accountUpdate.onclick = () => {
   accountEditRedirect();
 };
 
+const rerouteUpdate = (id) => {
+  window.location.href = `http://localhost:3000/new_recipe/update-recipe/${id}`;
+};
+
 const accountDelete = () => {
   const deleteMyAccount = confirm(
     "Are you sure you want to delete your account? This action cannot be undone"

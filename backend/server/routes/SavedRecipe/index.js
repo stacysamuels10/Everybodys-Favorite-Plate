@@ -12,8 +12,31 @@ const LoginCheck = async (req, res, next) => {
   }
 };
 
-router.get("/dashboard", (req, res) => {
-  res.render("dashboard");
+router.get("/dashboard", async (req, res) => {
+  try {
+    const { Email, Username, id } = req.session.user;
+    const finduser = await Users.findOne({
+      where: {
+        Username: Username,
+        Email: Email,
+        id: id,
+      },
+    });
+    const findall = await SavedRecipe.findAll({
+      where: { UserId: finduser.id },
+    });
+    console.log(findall);
+    if (findall) {
+      res.render("dashboard", {
+        locals: {
+          title: finduser,
+          recipe: findall,
+        },
+      });
+    }
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 //what is this route supposed to do? Is this getting all saved recipes or one saved recipe?
 //if it is for one recipe, we can use the get recipe by id in the new recipe js file so i dont think we need this. will leave it here just in case
@@ -53,25 +76,23 @@ router.get("/get_all_savedrecipe", LoginCheck, async (req, res) => {
   }
 });
 
-router.post("/add_savedrecipe", async (req, res) => {
-  const { id } = req.body;
-  console.log(req.session.user);
-  const SessionUser = req.session.user.id;
-  console.log(SessionUser);
+router.post("/add_savedrecipe/:id", async (req, res) => {
   try {
     console.log("try");
+    console.log(req.params.id);
+    console.log(req.session.user.id);
     const FindRecipe = await SavedRecipe.findOne({
       where: {
-        UserId: SessionUser,
-        NewRecipeId: id,
+        UserId: req.session.user.id,
+        NewRecipeId: req.params.id,
       },
     });
     console.log("before find recipe");
     console.log(FindRecipe);
     if (!FindRecipe) {
       const SavedRecipeInfo = {
-        UserId: SessionUser,
-        NewRecipeId: id,
+        UserId: req.session.user.id,
+        NewRecipeId: req.params.id,
         createAt: new Date(),
         updatedAt: new Date(),
       };
@@ -82,6 +103,7 @@ router.post("/add_savedrecipe", async (req, res) => {
           NewRecipeId: id,
         },
       });
+      console.log("cts", countTimesSaved);
       const findNewRec = await NewRecipes.findOne({
         where: {
           id: id,
@@ -101,7 +123,7 @@ router.post("/add_savedrecipe", async (req, res) => {
       res.status(400).send("Recipe has already saved");
     }
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send(error.message);
   }
 });
 

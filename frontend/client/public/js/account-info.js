@@ -52,6 +52,26 @@ const deleteUser = () => {
   };
 };
 
+const deleteRecipe = async (id) => {
+  const dataWeAreSending = await fetch(
+    `http://localhost:3000/new_recipe/delete_recipe/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const status = dataWeAreSending.status;
+  if (status === 200) {
+    window.location.href = "http://localhost:3000/user/account-info";
+    alert("Your recipe has been removed");
+  }
+  if (status === 400) {
+    alert("Recipe cannot be deleted at this time. Please try again later");
+  }
+};
+
 deleteAccount.onclick = () => {
   accountDelete();
 };

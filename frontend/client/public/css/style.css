@@ -38,7 +38,22 @@ input {
   width: 250px;
   margin-top: 2px;
   margin-bottom: 7px;
+  border: none;
+  border-bottom: 1.5px solid #110903;
+  background: transparent;
 }
 .divider {
   border: 1px solid #110903;
+}
+
+button {
+  background-color: #809376;
+  color: #ffc7ad;
+  border: none;
+  border-radius: 20px;
+  height: 30px;
+  padding: 10px;
+  place-content: center;
+  margin: 10px;
+  font-weight: 700;
 }

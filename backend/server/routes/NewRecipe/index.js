@@ -4,6 +4,7 @@ const { NewRecipes, Users, SavedRecipe } = require("../../../database/models");
 const bcrypt = require("bcrypt"); //i dont think we use this here?
 const router = express.Router();
 
+//used code
 const LoginCheck = async (req, res, next) => {
   if (req.session.user) {
     next();
@@ -11,6 +12,11 @@ const LoginCheck = async (req, res, next) => {
     res.render("home");
   }
 };
+//used code
+router.get("/create-recipe", (req, res) => {
+  res.render("create-recipe");
+});
+//used code
 router.get("/view-recipe/:id", LoginCheck, async (req, res) => {
   console.log(req.params.id);
   try {
@@ -31,13 +37,7 @@ router.get("/view-recipe/:id", LoginCheck, async (req, res) => {
     res.status(400).send("Saved Recipe does not exist");
   }
 });
-
-router.get("/create-recipe", (req, res) => {
-  res.render("create-recipe");
-});
-
-router.get("");
-
+//used code
 router.get("/update-recipe/:id", async (req, res) => {
   try {
     const findRecipe = await NewRecipes.findOne({
@@ -56,20 +56,7 @@ router.get("/update-recipe/:id", async (req, res) => {
     res.status(400).send("Recipe does not exist");
   }
 });
-
-router.get("/get_all_id_recipe", LoginCheck, async (req, res) => {
-  const findall = await NewRecipes.findAll({
-    where: {
-      UserId: req.session.user.id,
-    },
-  });
-  if (findall) {
-    res.status(200).send(findall);
-  } else {
-    res.status(400).send("No Recipes Found");
-  }
-});
-
+//used code
 router.post("/create_newrecipe", LoginCheck, async (req, res) => {
   console.log("create rec");
   const { Name, Picture, Ingredients, Instructions, FamilyStory } = req.body;
@@ -106,9 +93,11 @@ router.post("/create_newrecipe", LoginCheck, async (req, res) => {
     res.status(400).send(error);
   }
 });
-
-router.put("/update_newrecipe/:id", async (req, res) => {
+//used code
+router.put("/update_newrecipe/:id", LoginCheck, async (req, res) => {
   console.log("req", req.params.id);
+  console.log(req.session.user);
+  console.log("body here ", req.body);
   const { Name, Picture, Ingredients, Instructions, FamilyStory } = req.body;
   console.log("body ", req.body);
   const findrecipe = await NewRecipes.findOne({
@@ -118,24 +107,24 @@ router.put("/update_newrecipe/:id", async (req, res) => {
   });
   try {
     const recipeuserid = findrecipe.UserId;
-    //if (req.session.user.id === recipeuserid) {
-    if (findrecipe) {
-      findrecipe.update({
-        Name: Name,
-        Picture: Picture,
-        Ingredients: Ingredients,
-        Instructions: Instructions,
-        updateAt: new Date(),
-        FamilyStory: FamilyStory,
-      });
-      console.log(findrecipe.Name);
-      res.status(200).send("this is working");
+    if (req.session.user.id === recipeuserid) {
+      if (findrecipe) {
+        findrecipe.update({
+          Name: Name,
+          Picture: Picture,
+          Ingredients: Ingredients,
+          Instructions: Instructions,
+          updateAt: new Date(),
+          FamilyStory: FamilyStory,
+        });
+        res.status(200).send();
+      }
     }
-    //}
   } catch (error) {
     res.status(400).send(error);
   }
 });
+//used code
 router.delete("/delete_recipe/:id", async (req, res) => {
   try {
     const findrecipe = await NewRecipes.findOne({
@@ -166,20 +155,5 @@ router.delete("/delete_recipe/:id", async (req, res) => {
     res.status(400).send(error);
   }
 });
-router.post("/test_columns", async (req, res) => {
-  const { id } = req.body;
-  console.log("afterid");
-  try {
-    console.log("try");
-    const getrecipeinfo = await NewRecipes.findOne({
-      where: {
-        id: id,
-      },
-    });
-    console.log(getrecipeinfo);
-    res.staus(200).send(getrecipeinfo);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
+
 module.exports = router;

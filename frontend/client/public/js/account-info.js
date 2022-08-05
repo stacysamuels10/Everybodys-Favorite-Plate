@@ -1,27 +1,23 @@
-const accountUpdate = document.getElementById("update-account");
 const deleteAccount = document.getElementById("delete-account");
 const deleteAccountDiv = document.getElementById("delete-account-div");
 
-const accountEditRedirect = () => {
-  window.location.href = "http://localhost:3000/user/update-account";
-};
-accountUpdate.onclick = () => {
-  accountEditRedirect();
+const accountEditRedirect = (id) => {
+  window.location.href = `http://localhost:3000/user/update_user_render/${id}`;
 };
 
-const rerouteUpdate = (id) => {
+const editRecipeRedirect = (id) => {
   window.location.href = `http://localhost:3000/new_recipe/update-recipe/${id}`;
 };
 
-const accountDelete = () => {
+deleteAccount.onclick = () => {
   const deleteMyAccount = confirm(
     "Are you sure you want to delete your account? This action cannot be undone"
   );
   if (deleteMyAccount) {
-    //will invoke deleteUser() function when back end session confirmed
-    alert("Your account is deleted");
+    deleteUser();
   }
 };
+
 const deleteUser = () => {
   const EnterInfo = document.createElement("h2");
   EnterInfo.id = "enter-info";
@@ -29,10 +25,13 @@ const deleteUser = () => {
     "Please re-enter your username and password to confirm ";
   const Username = document.createElement("input");
   Username.id = "DEL-username";
+  Username.placeholder = "Username";
   const Password = document.createElement("input");
   Password.id = "DEL-password";
+  Password.placeholder = "Password";
   const deleteSubmit = document.createElement("button");
   deleteSubmit.innerHTML = "Delete Account";
+  deleteAccountDiv.append(EnterInfo, Username, Password, deleteSubmit);
   deleteSubmit.onclick = async () => {
     if (Username.value.length !== 0 && Password.value.length !== 0) {
       const data = {
@@ -49,9 +48,14 @@ const deleteUser = () => {
           body: JSON.stringify(data),
         }
       );
-      const json = await dataWeAreSending.json();
+      const status = dataWeAreSending.status;
+      if (status === 200) {
+        alert("Your account has been deleted");
+        window.location.href("http://localhost:3000");
+      }
     } else {
-      console.log("enter");
+      alert("Information does not match, please try again.");
+      window.location.href("http://localhost:3000/user/account-info");
     }
   };
 };
@@ -76,6 +80,21 @@ const deleteRecipe = async (id) => {
   }
 };
 
-deleteAccount.onclick = () => {
-  accountDelete();
+const logout = async () => {
+  console.log("function reading");
+  const dataWeAreSending = await fetch(`http://localhost:3000/user/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const status = dataWeAreSending.status;
+  console.log(status);
+  if (status === 200) {
+    alert("You have been logged out");
+    window.location.href = "http://localhost:3000";
+  }
+  if (status === 400) {
+    alert("Cannot log out at this time");
+  }
 };

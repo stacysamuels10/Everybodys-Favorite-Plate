@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="../../js/update-account.js"></script>
     <title>Document</title>
   </head>
   <body>
@@ -14,21 +15,23 @@
       >
       <a href="http://localhost:3000/new_recipe/create-recipe">Add a Recipe</a>
       <a href="http://localhost:3000/user/account-info">My Account</a>
-      <a href="">Logout</a>
+      <a href="" onclick="logout()">Logout</a>
     </div>
     <div class="main">
       <label for="email">Email: </label>
-      <textarea name="email" id="email" cols="15" rows="1">${Email}</textarea>
+      <textarea name="email" id="email" cols="15" rows="1">
+${updateAccount.Email}</textarea
+      >
       <label for="username">Username: </label>
       <textarea name="username" id="username" cols="15" rows="1">
-${Username}</textarea
+${updateAccount.Username}</textarea
       >
       <label for="OldPassword">Old Password: </label>
       <input
         type="password"
         name="OldPassword"
         id="OldPassword"
-        placeholder="Enter your old password"
+        placeholder="Enter your current password"
       />
       <label for="NewPassword">New Password: </label>
       <input
@@ -37,7 +40,13 @@ ${Username}</textarea
         id="NewPassword"
         placeholder="Enter your new password"
       />
-      <button id="delete-account-button">Delete Account</button>
+      <input
+        type="button"
+        class="${updateAccount.id}"
+        value="Update Recipe"
+        id="update-account"
+        onclick="bringOverId(${updateAccount.id})"
+      />
     </div>
   </body>
 </html>

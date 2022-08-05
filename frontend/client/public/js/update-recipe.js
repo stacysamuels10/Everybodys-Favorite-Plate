@@ -12,38 +12,49 @@ const updateRecipe = async (id) => {
     Ingredients: Ingredients,
     Instructions: Instructions,
     FamilyStory: FamilyStory,
+    updatedAt: new Date(),
   };
-  console.log(data);
+  console.log("data ", data);
   const dataWeAreSending = await fetch(
     `http://localhost:3000/new_recipe/update_newrecipe/${id}`,
     {
       method: "PUT",
-      header: {
+      headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     }
   );
-  const json = await dataWeAreSending.json();
-  console.log(json);
   const status = dataWeAreSending.status;
+  console.log(status);
   if (status === 200) {
-    //window.location.href = "http://localhost:3000/user/account-info";
     alert("Your recipe has been updated");
+    window.location.href = "http://localhost:3000/user/account-info";
   }
   if (status === 400) {
     alert("Recipe cannot be updated at this time. Please try again later");
   }
 };
 
-// submitButton.onclick = () => {
-//   setTimeout(() => {
-//     console.log(submitButton.class);
-//   }, "1000");
-//   //updateRecipe();
-// };
-
 const bringOverId = async (id) => {
   updateRecipe(id);
-  console.log("ran function");
+};
+
+const logout = async () => {
+  console.log("function reading");
+  const dataWeAreSending = await fetch(`http://localhost:3000/user/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const status = dataWeAreSending.status;
+  console.log(status);
+  if (status === 200) {
+    alert("You have been logged out");
+    window.location.href = "http://localhost:3000";
+  }
+  if (status === 400) {
+    alert("Cannot log out at this time");
+  }
 };

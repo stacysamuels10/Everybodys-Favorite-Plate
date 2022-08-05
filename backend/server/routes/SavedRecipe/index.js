@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt"); //i dont think we use this here?
 const session = require("express-session");
 const router = express.Router();
 
+//used code
 const LoginCheck = async (req, res, next) => {
   if (req.session.user) {
     next();
@@ -11,7 +12,7 @@ const LoginCheck = async (req, res, next) => {
     res.render("home");
   }
 };
-
+//used code
 router.get("/dashboard", async (req, res) => {
   try {
     let array = [];
@@ -47,27 +48,7 @@ router.get("/dashboard", async (req, res) => {
     res.status(400).send(error);
   }
 });
-//what is this route supposed to do? Is this getting all saved recipes or one saved recipe?
-//if it is for one recipe, we can use the get recipe by id in the new recipe js file so i dont think we need this. will leave it here just in case
-router.post("/get_savedrecipe/:id", LoginCheck, async (req, res) => {
-  const { RecipeId } = req.params.id;
-  const sessionUserId = req.session.user.id;
-  try {
-    const findSaved = await SavedRecipe.findOne({
-      where: {
-        UserId: sessionUserId,
-        NewRecipeId: RecipeId,
-      },
-    });
-    console.log(findSaved);
-    if (findSaved) {
-      res.status(200).send(findSaved);
-    }
-  } catch (error) {
-    res.status(400).send("Saved Recipe does not exist");
-  }
-});
-
+//used code
 router.get("/get_all_savedrecipe", LoginCheck, async (req, res) => {
   try {
     const findall = await SavedRecipe.findAll({
@@ -83,7 +64,7 @@ router.get("/get_all_savedrecipe", LoginCheck, async (req, res) => {
     res.status(400).send("Could not find any Saved Recipes");
   }
 });
-
+//used code
 router.post("/add_savedrecipe/:id", async (req, res) => {
   try {
     const FindRecipe = await SavedRecipe.findOne({
@@ -108,7 +89,7 @@ router.post("/add_savedrecipe/:id", async (req, res) => {
     res.status(400).send(error.message);
   }
 });
-
+//used code
 router.delete("/delete_savedrecipe/:id", LoginCheck, async (req, res) => {
   try {
     console.log("i am reading this route");

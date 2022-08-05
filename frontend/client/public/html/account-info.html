@@ -49,7 +49,7 @@
       </nav>
     </section>
     <div class="main">
-      <div class="account-info">
+      <div class="account-info content">
         <h3>Email: ${title.Email}</h3>
         <h3>Username: ${title.Username}</h3>
         <button
@@ -66,12 +66,13 @@
       </div>
       <div class="recipes-created">
         <div class="main">
-          <h2>Your Recipes:</h2>
+          <div class="content">
+            <h2>Your Recipes:</h2>
+          </div>
           <div class="recipes">
             ${recipe.map(NewRecipe => `
-            <div class="recipe-card">
-              <h2>${NewRecipe.Name}</h2>
-              <div class="recipe-img">
+            <div class="recipe-img">
+              <div class="recipe-card">
                 <a
                   href="http://localhost:3000/new_recipe/view-recipe/${NewRecipe.id}"
                   ><img
@@ -81,6 +82,9 @@
                     onerror="this.src='../css/logo.png'"
                     ;
                 /></a>
+              </div>
+              <div class="content">
+                <h4>${NewRecipe.Name}</h4>
               </div>
               <button
                 type="button"

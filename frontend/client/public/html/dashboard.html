@@ -58,7 +58,6 @@
           <div class="recipes is-ancestor">
             ${recipe.map(NewRecipe => `
             <div class="tile is-2 is-vertical">
-              <h2>${NewRecipe.Name}</h2>
               <div class="tile">
                 <a
                   href="http://localhost:3000/new_recipe/view-recipe/${NewRecipe.id}"
@@ -69,6 +68,9 @@
                     onerror="this.src='../css/logo.png'"
                     ;
                 /></a>
+              </div>
+              <div class="content">
+                <h4>${NewRecipe.Name}</h4>
               </div>
               <button
                 type="button"

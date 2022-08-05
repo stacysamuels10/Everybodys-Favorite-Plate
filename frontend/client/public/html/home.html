@@ -61,17 +61,7 @@
         <div class="recipes is-ancestor">
           ${title.map(NewRecipe => `
           <div class="tile is-2 is-vertical">
-            <h2 class="name">${NewRecipe.Name}</h2>
-            <div class="tile">
-              <input
-                type="button"
-                class="button is-rounded"
-                id="${NewRecipe.id}"
-                value="Save Recipe"
-                onclick="runPostRoute(${NewRecipe.id})"
-              />
-            </div>
-            <div class="">
+            <div class="content">
               <a
                 href="http://localhost:3000/new_recipe/view-recipe/${NewRecipe.id}"
                 ><img
@@ -80,6 +70,16 @@
                   onerror="this.src='../css/logo.png'"
                   ;
               /></a>
+            <h4 class="name">${NewRecipe.Name}</h4>
+            </div>
+            <div class="tile">
+              <input
+                type="button"
+                class="button is-rounded"
+                id="${NewRecipe.id}"
+                value="Save Recipe"
+                onclick="runPostRoute(${NewRecipe.id})"
+              />
             </div>
           </div>
           `).join('')}

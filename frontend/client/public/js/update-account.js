@@ -1,5 +1,53 @@
 const submitButton = document.getElementById("update-account");
 
+const validateEmail = () => {
+  const validationField1 = document.getElementById("validation-email-txt");
+  const emailError = [];
+  const validEmail =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const Email = document.getElementById("email").value;
+  if (!validEmail.test(Email)) {
+    emailError.push("Please enter a valid email address.");
+  }
+  if (emailError.length > 0) {
+    validationField1.innerHTML = emailError.join(" ");
+  }
+  validationField1.innerHTML = emailError.join(" ");
+};
+
+const validatePassword = () => {
+  const validationField2 = document.getElementById("validation-txt");
+  const Password = document.getElementById("NewPassword").value;
+  const errors = [];
+  const specialChars = /[~`!@#$%&*+=';/{}|:<>?()_]/;
+  const capitalLetter = /[ABCDEFGHIJKLMNOPQRSTUVWXYZ]/;
+  const lowercaseLetter = /[abcdefghijklmnopqrstuvwxyz]/;
+  const number = /[123456780]/;
+  if (Password.length < 8) {
+    errors.push("Password must be at least 8 characters");
+  }
+  if (!specialChars.test(Password)) {
+    errors.push(
+      "Please use at least one special character /[~`!@#$%&*+=';/{}|:<>?()_]"
+    );
+  }
+  if (!capitalLetter.test(Password)) {
+    errors.push("Please use at least 1 capital letter");
+  }
+  if (!lowercaseLetter.test(Password)) {
+    errors.push("Please use at least 1 lowercase letter");
+  }
+  if (!number.test(Password)) {
+    errors.push("Please user at least 1 number");
+  }
+  if (errors.length > 0) {
+    validationField2.innerHTML = errors.join(" ");
+    return false;
+  }
+  validationField2.innerHTML = errors.join(" ");
+  return true;
+};
+
 const updateAccount = async (id) => {
   const NewEmail = document.getElementById("email").value;
   const NewUsername = document.getElementById("username").value;

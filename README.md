@@ -40,4 +40,4 @@ Enjoy!
 
 ---
 
-You can read more about this project at [medium.com]()
+You can read more about this project at [medium.com](https://medium.com/@stacy.samuels10/43c76f987458)

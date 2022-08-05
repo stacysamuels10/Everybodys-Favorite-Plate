@@ -54,10 +54,13 @@
         </p>
       </section>
       <div class="main">
+        <div class="content">
         <h2>Most Recent Recipes:</h2>
+        <h4>Click on any recipe image to see the full recipe</h4>
+        </div>
         <div class="recipes is-ancestor">
           ${title.map(NewRecipe => `
-          <div class="tile is-3 is-vertical">
+          <div class="tile is-2 is-vertical">
             <h2 class="name">${NewRecipe.Name}</h2>
             <div class="tile">
               <input

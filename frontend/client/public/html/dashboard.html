@@ -51,10 +51,13 @@
     <div class="container">
       <div class="saved-recipes">
         <div class="main">
-          <h2>Your Saved Recipes:</h2>
+          <div class="content">
+            <h2>Your Saved Recipes:</h2>
+            <h4>Click on any recipe image to see the full recipe</h4>
+          </div>
           <div class="recipes is-ancestor">
             ${recipe.map(NewRecipe => `
-            <div class="tile is-3 is-vertical">
+            <div class="tile is-2 is-vertical">
               <h2>${NewRecipe.Name}</h2>
               <div class="tile">
                 <a

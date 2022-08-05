@@ -19,9 +19,18 @@
     </div>
     <div class="main">
       <label for="email">Email: </label>
-      <textarea name="email" id="email" cols="15" rows="1">
+      <textarea
+        name="email"
+        id="email"
+        cols="15"
+        rows="1"
+        onkeyup="validateEmail();"
+      >
 ${updateAccount.Email}</textarea
       >
+      <div class="validation">
+        <p id="validation-email-txt"></p>
+      </div>
       <label for="username">Username: </label>
       <textarea name="username" id="username" cols="15" rows="1">
 ${updateAccount.Username}</textarea
@@ -39,7 +48,11 @@ ${updateAccount.Username}</textarea
         name="NewPassword"
         id="NewPassword"
         placeholder="Enter your new password"
+        onkeyup="validatePassword();"
       />
+      <div class="validation">
+        <p id="validation-txt"></p>
+      </div>
       <input
         type="button"
         class="${updateAccount.id}"

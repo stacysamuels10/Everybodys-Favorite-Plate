@@ -3,7 +3,7 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const { NewRecipes, Users } = require("../../../database/models");
 const router = express.Router();
-
+//used code
 const LoginCheck = async (req, res, next) => {
   if (req.session.user) {
     next();
@@ -11,7 +11,8 @@ const LoginCheck = async (req, res, next) => {
     res.render("home");
   }
 };
-router.get("/home", async (req, res) => {
+//used code
+router.get("/home", LoginCheck, async (req, res) => {
   try {
     const top5 = await NewRecipes.findAll({
       order: [["createdAt", "DESC"]],
@@ -23,8 +24,8 @@ router.get("/home", async (req, res) => {
     res.status(400).send(error);
   }
 });
-
-router.get("/account-info", async (req, res) => {
+//used code
+router.get("/account-info", LoginCheck, async (req, res) => {
   try {
     let array = [];
     const user = {
@@ -58,20 +59,11 @@ router.get("/account-info", async (req, res) => {
     res.status(400).send(error);
   }
 });
+//used code
 router.get("/update-account", (req, res) => {
   res.render("update-account");
 });
-
-router.get("/userinfo", LoginCheck, async (req, res) => {
-  const { id, Email, Username, Password } = req.session.user;
-  const userinfo = {
-    id: id,
-    Email: Email,
-    Username: Username,
-    Password: Password,
-  };
-  res.send(userinfo);
-});
+//used code
 router.post("/login", async (req, res) => {
   const { Username, Password } = req.body;
   try {
@@ -94,7 +86,7 @@ router.post("/login", async (req, res) => {
     res.status(400).send(error);
   }
 });
-
+//used code
 router.post("/create_user", async (req, res) => {
   const { Email, Username, Password } = req.body;
   const salt = await bcrypt.genSalt(10);
@@ -128,7 +120,7 @@ router.post("/create_user", async (req, res) => {
     res.status(400).send(error);
   }
 });
-
+//used code
 router.get("/update_user_render/:id", LoginCheck, async (req, res) => {
   try {
     const findAccount = await Users.findOne({
@@ -147,7 +139,7 @@ router.get("/update_user_render/:id", LoginCheck, async (req, res) => {
     res.status(400).send("Account cannot be found");
   }
 });
-
+//used code
 router.put("/update_user/:id", LoginCheck, async (req, res) => {
   const { NewUsername, OldPassword, NewPassword, NewEmail } = req.body;
   try {
@@ -180,6 +172,7 @@ router.put("/update_user/:id", LoginCheck, async (req, res) => {
     res.status(400).send(error);
   }
 });
+//used code
 router.delete("/delete_user", LoginCheck, async (req, res) => {
   const { Username, Password } = req.body;
   try {
@@ -203,8 +196,8 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
     res.status(400).send("Wrong Username or Password.");
   }
 });
-router.post("/logout", (req, res) => {
-  console.log(req.session.user);
+//used code
+router.post("/logout", LoginCheck, (req, res) => {
   try {
     req.session.destroy();
     res.status(200).send();

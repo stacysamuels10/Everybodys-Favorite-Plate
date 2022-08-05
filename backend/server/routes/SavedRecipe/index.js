@@ -13,7 +13,7 @@ const LoginCheck = async (req, res, next) => {
   }
 };
 //used code
-router.get("/dashboard", async (req, res) => {
+router.get("/dashboard", LoginCheck, async (req, res) => {
   try {
     let array = [];
     const { Email, Username, id } = req.session.user;
@@ -54,7 +54,6 @@ router.get("/get_all_savedrecipe", LoginCheck, async (req, res) => {
     const findall = await SavedRecipe.findAll({
       where: { UserId: req.session.user.id },
     });
-    console.log(findall);
     if (findall) {
       res.status(200).send(findall);
     } else {
@@ -65,7 +64,7 @@ router.get("/get_all_savedrecipe", LoginCheck, async (req, res) => {
   }
 });
 //used code
-router.post("/add_savedrecipe/:id", async (req, res) => {
+router.post("/add_savedrecipe/:id", LoginCheck, async (req, res) => {
   try {
     const FindRecipe = await SavedRecipe.findOne({
       where: {
@@ -92,14 +91,12 @@ router.post("/add_savedrecipe/:id", async (req, res) => {
 //used code
 router.delete("/delete_savedrecipe/:id", LoginCheck, async (req, res) => {
   try {
-    console.log("i am reading this route");
     const findRecipe = await SavedRecipe.findOne({
       where: {
         UserId: req.session.user.id,
         NewRecipeId: req.params.id,
       },
     });
-    console.log(findRecipe);
     if (!findRecipe) {
       res.status(400).send("Recipe not found");
     }

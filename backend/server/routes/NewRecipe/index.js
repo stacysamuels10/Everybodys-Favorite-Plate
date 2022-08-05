@@ -18,14 +18,12 @@ router.get("/create-recipe", (req, res) => {
 });
 //used code
 router.get("/view-recipe/:id", LoginCheck, async (req, res) => {
-  console.log(req.params.id);
   try {
     const findRecipe = await NewRecipes.findOne({
       where: {
         id: req.params.id,
       },
     });
-    console.log(findRecipe);
     if (findRecipe) {
       res.status(200).render("view-recipe", {
         locals: {
@@ -38,7 +36,7 @@ router.get("/view-recipe/:id", LoginCheck, async (req, res) => {
   }
 });
 //used code
-router.get("/update-recipe/:id", async (req, res) => {
+router.get("/update-recipe/:id", LoginCheck, async (req, res) => {
   try {
     const findRecipe = await NewRecipes.findOne({
       where: {
@@ -58,11 +56,9 @@ router.get("/update-recipe/:id", async (req, res) => {
 });
 //used code
 router.post("/create_newrecipe", LoginCheck, async (req, res) => {
-  console.log("create rec");
   const { Name, Picture, Ingredients, Instructions, FamilyStory } = req.body;
   try {
     const userid = req.session.user.id;
-    console.log(userid);
     const findusernameid = await Users.findOne({
       where: {
         id: userid,
@@ -81,8 +77,7 @@ router.post("/create_newrecipe", LoginCheck, async (req, res) => {
         updatedAt: new Date(),
         TimesSaved: 0,
       };
-      const CreateRecipe = await NewRecipes.create(RecipeInfo); // need to user this variable in the .send
-      console.log(CreateRecipe);
+      const CreateRecipe = await NewRecipes.create(RecipeInfo);
       res.status(200).send("Recipe created");
     } else {
       res.status(400).send("have to be logged in to upload recipe")({
@@ -95,11 +90,7 @@ router.post("/create_newrecipe", LoginCheck, async (req, res) => {
 });
 //used code
 router.put("/update_newrecipe/:id", LoginCheck, async (req, res) => {
-  console.log("req", req.params.id);
-  console.log(req.session.user);
-  console.log("body here ", req.body);
   const { Name, Picture, Ingredients, Instructions, FamilyStory } = req.body;
-  console.log("body ", req.body);
   const findrecipe = await NewRecipes.findOne({
     where: {
       id: req.params.id,
@@ -125,7 +116,7 @@ router.put("/update_newrecipe/:id", LoginCheck, async (req, res) => {
   }
 });
 //used code
-router.delete("/delete_recipe/:id", async (req, res) => {
+router.delete("/delete_recipe/:id", LoginCheck, async (req, res) => {
   try {
     const findrecipe = await NewRecipes.findOne({
       where: {
@@ -151,7 +142,6 @@ router.delete("/delete_recipe/:id", async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error);
     res.status(400).send(error);
   }
 });

@@ -31,7 +31,6 @@ const updateAccount = async (id) => {
           OldPassword: OldPassword,
           NewPassword: NewPassword,
         };
-        console.log("data ", data);
         const dataWeAreSending = await fetch(
           `http://localhost:3000/user/update_user/${id}`,
           {
@@ -43,7 +42,6 @@ const updateAccount = async (id) => {
           }
         );
         const status = dataWeAreSending.status;
-        console.log(status);
         if (status === 200) {
           alert("Your account has been updated");
           window.location.href = "http://localhost:3000/user/account-info";
@@ -72,7 +70,6 @@ const bringOverId = async (id) => {
 };
 
 const logout = async () => {
-  console.log("function reading");
   const dataWeAreSending = await fetch(`http://localhost:3000/user/logout`, {
     method: "POST",
     headers: {
@@ -80,7 +77,6 @@ const logout = async () => {
     },
   });
   const status = dataWeAreSending.status;
-  console.log(status);
   if (status === 200) {
     alert("You have been logged out");
     window.location.href = "http://localhost:3000";

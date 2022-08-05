@@ -21,7 +21,6 @@ const runPostRoute = async (id) => {
 };
 
 const logout = async () => {
-  console.log("function reading");
   const dataWeAreSending = await fetch(`http://localhost:3000/user/logout`, {
     method: "POST",
     headers: {
@@ -29,7 +28,6 @@ const logout = async () => {
     },
   });
   const status = dataWeAreSending.status;
-  console.log(status);
   if (status === 200) {
     alert("You have been logged out");
     window.location.href = "http://localhost:3000";

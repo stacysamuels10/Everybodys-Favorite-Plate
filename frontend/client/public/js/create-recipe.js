@@ -1,5 +1,5 @@
 const createRecipeSubmit = document.getElementById("create-recipe-submit");
-
+//function to create a new recipe
 const sendData = async () => {
   const Name = document.getElementById("recipe-name").value;
   const Picture = document.getElementById("recipe-image").value;

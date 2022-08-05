@@ -1,7 +1,7 @@
 const signUpSubmit = document.getElementById("sign-up-submit");
 const signInSubmit = document.getElementById("sign-in-submit");
 const guestSignIn = document.getElementById("guest");
-
+//lets the user know their email is not valid
 const validateEmail = () => {
   const validationField1 = document.getElementById("validation-email-txt");
   const emailError = [];
@@ -16,7 +16,7 @@ const validateEmail = () => {
   }
   validationField1.innerHTML = emailError.join(" ");
 };
-
+//lets the user know the requirements that their password is not valid
 const validatePassword = () => {
   const validationField2 = document.getElementById("validation-txt");
   const Password = document.getElementById("SU-password").value;
@@ -49,7 +49,7 @@ const validatePassword = () => {
   validationField2.innerHTML = errors.join(" ");
   return true;
 };
-
+//lets the user know their passwords do not match
 const passwordMatch = () => {
   const match = [];
   const validationField3 = document.getElementById("validation-pwd-txt");
@@ -60,7 +60,7 @@ const passwordMatch = () => {
   }
   validationField3.innerHTML = match.join("");
 };
-
+//function to create user
 const signUp = async () => {
   const Email = document.getElementById("SU-email").value;
   const Username = document.getElementById("SU-username").value;
@@ -120,7 +120,7 @@ const signUp = async () => {
     alert("Please enter information in all fields");
   }
 };
-
+//function to sign in
 const signIn = async () => {
   const Username = document.getElementById("SI-username").value;
   const Password = document.getElementById("SI-password").value;
@@ -145,7 +145,7 @@ const signIn = async () => {
     }
   }
 };
-
+//function to sign in as guest
 const signInGuest = async () => {
   const Username = "Guest";
   const Password = "Password1!";

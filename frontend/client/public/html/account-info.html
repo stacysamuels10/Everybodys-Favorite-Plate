@@ -50,6 +50,7 @@
     </section>
     <div class="main">
       <div class="account-info content">
+        <!--rendering account infromation from template engine back-end-->
         <h3>Email: ${title.Email}</h3>
         <h3>Username: ${title.Username}</h3>
         <button
@@ -70,6 +71,7 @@
             <h2>Your Recipes:</h2>
           </div>
           <div class="recipes">
+            <!--rendering recipes saved from template engine back-end-->
             ${recipe.map(NewRecipe => `
             <div class="recipe-img">
               <div class="recipe-card">
@@ -86,6 +88,7 @@
               <div class="content">
                 <h4>${NewRecipe.Name}</h4>
               </div>
+              <!--on click event uses template engine to grab recipe id and run an update request-->
               <button
                 type="button"
                 class="edit-recipe button is-rounded"
@@ -94,6 +97,7 @@
               >
                 Edit Recipe
               </button>
+              <!--on click event uses template engine to grab recipe id and run a delete request-->
               <button
                 type="button"
                 class="delete-recipe button is-rounded"

@@ -1,7 +1,6 @@
 const express = require("express");
 const session = require("express-session");
 const { NewRecipes, Users, SavedRecipe } = require("../../../database/models");
-const bcrypt = require("bcrypt"); //i dont think we use this here?
 const router = express.Router();
 
 //route used to protect our other routes checking for active session
@@ -35,7 +34,8 @@ router.get("/view-recipe/:id", LoginCheck, async (req, res) => {
     res.status(400).send("Saved Recipe does not exist");
   }
 });
-//used code
+//renders the edit recipe page. preserves the data so the user
+//has text area with the current recipe already loaded
 router.get("/update-recipe/:id", LoginCheck, async (req, res) => {
   try {
     const findRecipe = await NewRecipes.findOne({

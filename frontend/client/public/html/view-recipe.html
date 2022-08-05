@@ -4,24 +4,77 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="../../js/home.js"></script>
+    <link defer rel="stylesheet" href="../css/view-recipe.css" />
+    <link
+      defer
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
     <title>The Favorite Recipe</title>
   </head>
   <body>
-    <div class="nav-bar">
-      <a href="localhost:3000/user/home">Home</a>
-      <a href="localhost:3000/savedrecipe/dashboard">My Dashboard</a>
-      <a href="localhost:3000/newrecipe/create-recipe">Add a Recipe</a>
-    </div>
+    <section class="hero is-success">
+      <nav class="level hero-body">
+        <h1 class="level-item has-text-centered content is-large">
+          Everybody's Favorite Plate
+        </h1>
+        <p class="level-item has-text-centered">
+          <a href="http://localhost:3000/user/home" class="link is-info"
+            >Home</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a
+            href="http://localhost:3000/saved_recipe/dashboard"
+            class="link is-info"
+            >My Saved Recipes</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a href="http://localhost:3000/user/account-info" class="link is-info"
+            >My Account</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a
+            href="http://localhost:3000/new_recipe/create-recipe"
+            class="link is-info"
+            >Add a recipe</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a onclick="logout()" class="link is-info">Logout</a>
+        </p>
+      </nav>
+    </section>
     <div class="container">
-      <h1>${NewRecipes.name}</h1>
-      <img src="${NewRecipes.Picture}" />
-      <h3>Ingredients</h3>
-      <p>${NewRecipes.Ingredients}</p>
-      <h3>Instructions</h3>
-      <p>${NewRecipes.Instructions}</p>
-      <h3>Family Story</h3>
-      <p>${NewRecipes.FamilyStory}</p>
-      <button>Save Recipe</button>
+      <div class="content">
+        <h1>${title.Name}</h1>
+        <!--on error allows for a user to not have an image url-->
+        <img
+          class="image"
+          style="border-radius: 20px"
+          src="${title.Picture}"
+          onerror="this.onerror=null;this.src='../../css/logo.png'"
+          ;
+        />
+        <h3>Ingredients</h3>
+        <p>${title.Ingredients}</p>
+        <h3>Instructions</h3>
+        <p>${title.Instructions}</p>
+        <h3>Family Story</h3>
+        <p>${title.FamilyStory}</p>
+        <!--on click preserves recipe id from template engine and runs a post request-->
+        <button
+          type="button"
+          class="save-recipe button is-rounded"
+          id="${title.id}"
+          onclick="runPostRoute(${title.id})"
+        >
+          Save Recipe
+        </button>
+      </div>
     </div>
   </body>
 </html>

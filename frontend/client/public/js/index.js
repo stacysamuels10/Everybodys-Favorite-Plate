@@ -1,7 +1,7 @@
 const signUpSubmit = document.getElementById("sign-up-submit");
 const signInSubmit = document.getElementById("sign-in-submit");
-//const changePasswordSubmit = document.getElementById("UP-submit");
-
+const guestSignIn = document.getElementById("guest");
+//lets the user know their email is not valid
 const validateEmail = () => {
   const validationField1 = document.getElementById("validation-email-txt");
   const emailError = [];
@@ -9,14 +9,14 @@ const validateEmail = () => {
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const Email = document.getElementById("SU-email").value;
   if (!validEmail.test(Email)) {
-    emailError.push("You have entered an invalid email address!");
+    emailError.push("Please enter a valid email address.");
   }
   if (emailError.length > 0) {
     validationField1.innerHTML = emailError.join(" ");
   }
   validationField1.innerHTML = emailError.join(" ");
 };
-
+//lets the user know the requirements that their password is not valid
 const validatePassword = () => {
   const validationField2 = document.getElementById("validation-txt");
   const Password = document.getElementById("SU-password").value;
@@ -49,7 +49,7 @@ const validatePassword = () => {
   validationField2.innerHTML = errors.join(" ");
   return true;
 };
-
+//lets the user know their passwords do not match
 const passwordMatch = () => {
   const match = [];
   const validationField3 = document.getElementById("validation-pwd-txt");
@@ -60,8 +60,8 @@ const passwordMatch = () => {
   }
   validationField3.innerHTML = match.join("");
 };
-
-const sendData = async () => {
+//function to create user
+const signUp = async () => {
   const Email = document.getElementById("SU-email").value;
   const Username = document.getElementById("SU-username").value;
   const Password = document.getElementById("SU-password").value;
@@ -72,30 +72,56 @@ const sendData = async () => {
     Password.length !== 0 &&
     PasswordRe.length !== 0
   ) {
-    const data = {
-      Email: Email,
-      Username: Username,
-      Password: Password,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    const dataWeAreSending = await fetch(
-      "http://localhost:3000/user/create_user",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+    const validEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (validEmail.test(Email)) {
+      const specialChars = /[~`!@#$%&*+=';/{}|:<>?()_]/;
+      const capitalLetter = /[ABCDEFGHIJKLMNOPQRSTUVWXYZ]/;
+      const lowercaseLetter = /[abcdefghijklmnopqrstuvwxyz]/;
+      const number = /[123456780]/;
+      if (
+        Password.length > 8 &&
+        specialChars.test(Password) &&
+        capitalLetter.test(Password) &&
+        lowercaseLetter.test(Password) &&
+        number.test(Password)
+      ) {
+        const data = {
+          Email: Email,
+          Username: Username,
+          Password: Password,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        const dataWeAreSending = await fetch(
+          "http://localhost:3000/user/create_user",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const status = dataWeAreSending.status;
+        if (status === 200) {
+          window.location.href = "http://localhost:3000/user/home";
+        }
+        if (status === 500) {
+          alert("Username or Password already exists");
+        }
+      } else {
+        alert("Please use a valid email and password");
       }
-    );
-    const status = dataWeAreSending.status;
+    } else {
+      alert("Please use a valid email and password");
+    }
   } else {
     alert("Please enter information in all fields");
   }
 };
-
-const findUser = async () => {
+//function to sign in
+const signIn = async () => {
   const Username = document.getElementById("SI-username").value;
   const Password = document.getElementById("SI-password").value;
   if (Username.length !== 0 && Password.length !== 0) {
@@ -112,50 +138,46 @@ const findUser = async () => {
     });
     const status = dataWeAreSending.status;
     if (status === 200) {
-      window.location.href = "/user/home";
+      window.location.href = "http://localhost:3000/user/home";
     }
     if (status === 400) {
       alert("Username or password is incorrect, please try again");
     }
   }
 };
+//function to sign in as guest
+const signInGuest = async () => {
+  const Username = "Guest";
+  const Password = "Password1!";
 
-// const updatePassword = async () => {
-//   const Username = document.getElementById("UP-username").value;
-//   const OldPassword = document.getElementById("UP-password").value;
-//   const NewPassword = document.getElementById("UP-new-password").value;
-//   if (
-//     Username.length !== 0 &&
-//     OldPassword.length !== 0 &&
-//     NewPassword.length !== 0
-//   ) {
-//     const data = {
-//       Username: Username,
-//       OldPassword: OldPassword,
-//       NewPassword: NewPassword,
-//     };
-//     const dataWeAreSending = await fetch(
-//       "http://localhost:3000/user/update_password",
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(data),
-//       }
-//     );
-//     const json = await dataWeAreSending.json();
-//   } else {
-//     console.log("passwords didnt change");
-//   }
-// };
+  const data = {
+    Username: Username,
+    Password: Password,
+  };
+  const dataWeAreSending = await fetch("http://localhost:3000/user/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  const status = dataWeAreSending.status;
+  if (status === 200) {
+    window.location.href = "http://localhost:3000/user/home";
+  }
+  if (status === 400) {
+    alert("Username or password is incorrect, please try again");
+  }
+};
 
 signUpSubmit.onclick = () => {
-  console.log("hello");
-  sendData();
+  signUp();
 };
 
 signInSubmit.onclick = () => {
-  console.log("i work now");
-  findUser();
+  signIn();
+};
+
+guestSignIn.onclick = () => {
+  signInGuest();
 };

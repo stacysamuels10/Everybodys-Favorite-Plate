@@ -4,36 +4,96 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="../../js/update-account.js"></script>
+    <link defer rel="stylesheet" href="../css/update-account.css" />
+    <link
+      defer
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
     <title>Document</title>
   </head>
   <body>
-    <div class="nav-bar">
-      <a href="localhost:3000/user/home">Home</a>
-      <a href="localhost:3000/savedrecipe/dashboard">My Dashboard</a>
-      <a href="localhost:3000/newrecipe/create-recipe">Add a Recipe</a>
-    </div>
+    <section class="hero is-success">
+      <nav class="level hero-body">
+        <h1 class="level-item has-text-centered content is-large">
+          Everybody's Favorite Plate
+        </h1>
+        <p class="level-item has-text-centered">
+          <a href="http://localhost:3000/user/home" class="link is-info"
+            >Home</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a
+            href="http://localhost:3000/saved_recipe/dashboard"
+            class="link is-info"
+            >My Saved Recipes</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a href="http://localhost:3000/user/account-info" class="link is-info"
+            >My Account</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a
+            href="http://localhost:3000/new_recipe/create-recipe"
+            class="link is-info"
+            >Add a recipe</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a onclick="logout()" class="link is-info">Logout</a>
+        </p>
+      </nav>
+    </section>
     <div class="main">
       <label for="email">Email: </label>
-      <textarea name="email" id="email" cols="15" rows="1">${Email}</textarea>
+      <!--checking if user has entered a valid email after every key stroke-->
+      <textarea
+        name="email"
+        id="email"
+        cols="15"
+        rows="1"
+        onkeyup="validateEmail();"
+      >
+${updateAccount.Email}</textarea
+      >
+      <div class="validation">
+        <p id="validation-email-txt"></p>
+      </div>
       <label for="username">Username: </label>
       <textarea name="username" id="username" cols="15" rows="1">
-${Username}</textarea
+${updateAccount.Username}</textarea
       >
       <label for="OldPassword">Old Password: </label>
       <input
         type="password"
         name="OldPassword"
         id="OldPassword"
-        placeholder="Enter your old password"
+        placeholder="Enter your current password"
       />
       <label for="NewPassword">New Password: </label>
+      <!--checking if user has entered a valid password after every key stroke-->
       <input
         type="password"
         name="NewPassword"
         id="NewPassword"
         placeholder="Enter your new password"
+        onkeyup="validatePassword();"
       />
-      <button id="delete-account-button">Delete Account</button>
+      <div class="validation">
+        <p id="validation-txt"></p>
+      </div>
+      <!--on click event uses template engine to grab recipe id and run an update request-->
+      <input
+        type="button"
+        class="${updateAccount.id} button is-rounded"
+        value="Update Recipe"
+        id="update-account"
+        onclick="bringOverId(${updateAccount.id})"
+      />
     </div>
   </body>
 </html>

@@ -1,9 +1,9 @@
-//function to save a recipe onto their dashboard
-const runPostRoute = async (id) => {
+//function to unsave and refresh the page
+const unsaveRecipe = async (id) => {
   const dataWeAreSending = await fetch(
-    `http://localhost:3000/saved_recipe/add_savedrecipe/${id}`,
+    `http://localhost:3000/saved_recipe/delete_savedrecipe/${id}`,
     {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
@@ -11,7 +11,8 @@ const runPostRoute = async (id) => {
   );
   const status = dataWeAreSending.status;
   if (status === 200) {
-    alert("Your recipe has been saved");
+    window.location.href = "http://localhost:3000/saved_recipe/dashboard";
+    alert("Your recipe has been removed");
   }
   if (status === 500) {
     alert("You have already saved this recipe");

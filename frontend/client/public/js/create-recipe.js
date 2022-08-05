@@ -1,5 +1,5 @@
 const createRecipeSubmit = document.getElementById("create-recipe-submit");
-
+//function to create a new recipe
 const sendData = async () => {
   const Name = document.getElementById("recipe-name").value;
   const Picture = document.getElementById("recipe-image").value;
@@ -31,18 +31,34 @@ const sendData = async () => {
         body: JSON.stringify(data),
       }
     );
-    const json = await dataWeAreSending.json();
     const status = dataWeAreSending.status;
     if (status === 200) {
       alert("Thank you for adding your recipe!");
+      window.location.href = "http://localhost:3000/user/account-info";
     } else {
       alert("Your recipe could not be added at this time. Please try again.");
     }
   } else {
     alert("Please make sure all fields are completed");
-    //need to make alerts to add something to missing spots
   }
 };
 createRecipeSubmit.onclick = () => {
   sendData();
+};
+
+const logout = async () => {
+  const dataWeAreSending = await fetch(`http://localhost:3000/user/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const status = dataWeAreSending.status;
+  if (status === 200) {
+    alert("You have been logged out");
+    window.location.href = "http://localhost:3000";
+  }
+  if (status === 400) {
+    alert("Cannot log out at this time");
+  }
 };

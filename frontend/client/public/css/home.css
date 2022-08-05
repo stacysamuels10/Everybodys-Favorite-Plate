@@ -1,0 +1,23 @@
+* {
+  margin: 10px;
+}
+
+body {
+  background-color: #eeeef0;
+  font-family: "Arsenal", sans-serif;
+  color: #110903;
+}
+
+img {
+  border-radius: 20px;
+}
+
+.recipes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.block:not(:last-child) {
+  margin-bottom: 1.5rem;
+}

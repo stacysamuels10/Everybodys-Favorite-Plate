@@ -4,15 +4,73 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="../../js/update-recipe.js"></script>
+    <link defer rel="stylesheet" href="../../css/update-recipe.css" />
+    <link
+      defer
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
     <title>Update Recipe</title>
   </head>
   <body>
-    <div class="nav-bar">
-      <a href="localhost:3000/user/home">Home</a>
-      <a href="localhost:3000/savedrecipe/dashboard">My Dashboard</a>
-      <a href="localhost:3000/newrecipe/create-recipe">Add a Recipe</a>
-    </div>
+    <section class="hero is-success">
+      <nav class="level hero-body">
+        <h1 class="level-item has-text-centered content is-large">
+          Everybody's Favorite Plate
+        </h1>
+        <p class="level-item has-text-centered">
+          <a href="http://localhost:3000/user/home" class="link is-info"
+            >Home</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a
+            href="http://localhost:3000/saved_recipe/dashboard"
+            class="link is-info"
+            >My Saved Recipes</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a href="http://localhost:3000/user/account-info" class="link is-info"
+            >My Account</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a
+            href="http://localhost:3000/new_recipe/create-recipe"
+            class="link is-info"
+            >Add a recipe</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a onclick="logout()" class="link is-info">Logout</a>
+        </p>
+      </nav>
+    </section>
     <div class="container">
+      <div class="create-recipe content">
+        <h1>Update your recipe</h1>
+        <h3>Tips for uploading a quality recipe:</h3>
+        <ol>
+          <li>
+            A descriptive title. "Grandma's Casserole" doesn't tell us much, but
+            "Grandma's Spinach and Cream Chicken Casserole" does!
+          </li>
+          <li>
+            Accurate Measurements. We know that, often, family recipes are "a
+            pinch of this" and "a bunch of that" but our advice is to take
+            measurements the next time you make it to update amounts so others
+            can enjoy it exactly as intended.
+          </li>
+          <li>
+            Add your family's story. We want to hear why this recipe is special
+            to you and yours to help bring us closer.
+          </li>
+          <li>Please enter an image URL only</li>
+        </ol>
+      </div>
+      <!--template engine rendering recipe data into text area so user can edit instead of completely starting anew-->
       <textarea
         name="recipe-name"
         class="create-recipe"
@@ -20,7 +78,7 @@
         cols="30"
         rows="1"
       >
-${Recipe Name}</textarea
+${update.Name}</textarea
       >
       <textarea
         name="recipe-image"
@@ -29,7 +87,7 @@ ${Recipe Name}</textarea
         cols="30"
         rows="1"
       >
-${Picture}</textarea
+${update.Picture}</textarea
       >
       <textarea
         name="ingredients"
@@ -38,7 +96,7 @@ ${Picture}</textarea
         cols="30"
         rows="10"
       >
-${Recipe Ingredients}</textarea
+${update.Ingredients}</textarea
       >
       <textarea
         name="instructions"
@@ -47,7 +105,7 @@ ${Recipe Ingredients}</textarea
         rows="10"
         class="create-recipe"
       >
-${Recipe Ingredients}</textarea
+${update.Instructions}</textarea
       >
       <textarea
         name="family-story"
@@ -56,10 +114,16 @@ ${Recipe Ingredients}</textarea
         rows="10"
         class="create-recipe"
       >
-${Family Story}</textarea
+${update.FamilyStory}</textarea
       >
-      <button type="submit" class="create-recipe" id="create-recipe-submit">
-        Submit
+      <!--on click event uses template engine to grab recipe id and run a put request-->
+      <button
+        type="button"
+        class="${update.id} button is-rounded"
+        id="update-recipe"
+        onclick="bringOverId(${update.id})"
+      >
+        Update Recipe
       </button>
     </div>
   </body>

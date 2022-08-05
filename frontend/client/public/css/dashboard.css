@@ -1,0 +1,15 @@
+body {
+  background-color: #eeeef0;
+  font-family: "Arsenal", sans-serif;
+  color: #110903;
+}
+.recipes {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 10px;
+}
+
+img {
+  border-radius: 20px;
+}

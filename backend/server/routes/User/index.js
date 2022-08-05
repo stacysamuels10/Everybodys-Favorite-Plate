@@ -3,23 +3,20 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const { NewRecipes, Users } = require("../../../database/models");
 const router = express.Router();
-
+//making sure user is logged in
 const LoginCheck = async (req, res, next) => {
-  console.log(req.session);
   if (req.session.user) {
     next();
   } else {
     res.render("home");
   }
 };
-router.get("/home", async (req, res) => {
+//render home page
+router.get("/home", LoginCheck, async (req, res) => {
   try {
     const top5 = await NewRecipes.findAll({
-      where: {
-        id: 37,
-      },
+      order: [["createdAt", "DESC"]],
     });
-    console.log("TOP5", top5);
     res.render("home", {
       locals: { title: top5 },
     });
@@ -27,24 +24,46 @@ router.get("/home", async (req, res) => {
     res.status(400).send(error);
   }
 });
-
-router.get("/account-info", (req, res) => {
-  res.render("account-info");
+//render account info page
+router.get("/account-info", LoginCheck, async (req, res) => {
+  try {
+    let array = [];
+    const user = {
+      id: req.session.user.id,
+      Email: req.session.user.Email,
+      Username: req.session.user.Username,
+      Password: req.session.user.Password,
+    };
+    const findall = await NewRecipes.findAll({
+      where: {
+        UserId: req.session.user.id,
+      },
+    });
+    if (findall) {
+      for (let i = 0; i < findall.length; i++) {
+        const findRecipe = await NewRecipes.findOne({
+          where: {
+            id: findall[i].dataValues.id,
+          },
+        });
+        array.push(findRecipe);
+      }
+      res.status(200).render("account-info", {
+        locals: {
+          title: user,
+          recipe: array,
+        },
+      });
+    }
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
+//render update account page
 router.get("/update-account", (req, res) => {
   res.render("update-account");
 });
-
-router.get("/userinfo", LoginCheck, async (req, res) => {
-  const { id, Email, Username, Password } = req.session.user;
-  const userinfo = {
-    id: id,
-    Email: Email,
-    Username: Username,
-    Password: Password,
-  };
-  res.send(userinfo);
-});
+//route to check user's login credentials match a current user
 router.post("/login", async (req, res) => {
   const { Username, Password } = req.body;
   try {
@@ -53,24 +72,13 @@ router.post("/login", async (req, res) => {
         Username: Username,
       },
     });
-    console.log(finduser);
-    console.log("beforebcrypt");
     const validatePassword = await bcrypt.compare(
       Password,
       finduser.dataValues.Password
     );
-    console.log(finduser.Password);
-    console.log(validatePassword);
     if (validatePassword) {
-      console.log("validated");
       req.session.user = finduser;
-      console.log(req.session);
-      console.log(req.session.user);
-      console.log(req.session.user.Email);
-      console.log(req.session.user.Password);
-
       res.status(200).send("logged in and sessionfound");
-      // res.redirect
     } else {
       res.status(400).send("Username or Password Incorrect");
     }
@@ -78,13 +86,11 @@ router.post("/login", async (req, res) => {
     res.status(400).send(error);
   }
 });
-
+//route to create new user if email and username do not exist
 router.post("/create_user", async (req, res) => {
   const { Email, Username, Password } = req.body;
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(Password, salt);
-  console.log(`hashedpassword ${hashPassword}`);
-  console.log("line 11");
   try {
     const FindUsername = await Users.findOne({
       where: {
@@ -105,24 +111,41 @@ router.post("/create_user", async (req, res) => {
         updatedAt: new Date(),
       };
       const CreateUser = await Users.create(UserInfo);
-      console.log(CreateUser);
+      req.session.user = CreateUser;
       res.status(200).send(CreateUser);
     } else {
-      res.status(400).send("Username or Email already exist.");
+      res.status(500).send("Username or Email already exist.");
     }
   } catch (error) {
-    console.log("no work");
     res.status(400).send(error);
   }
 });
-router.put("/update_user", LoginCheck, async (req, res) => {
-  console.log(req.session);
-  const { Username, NewUsername, OldPassword, NewPassword, NewEmail } =
-    req.body;
+//renders preserved infomation into update account
+router.get("/update_user_render/:id", LoginCheck, async (req, res) => {
+  try {
+    const findAccount = await Users.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (findAccount) {
+      res.status(200).render("update-account", {
+        locals: {
+          updateAccount: findAccount,
+        },
+      });
+    }
+  } catch (error) {
+    res.status(400).send("Account cannot be found");
+  }
+});
+//updates user's information after form submission
+router.put("/update_user/:id", LoginCheck, async (req, res) => {
+  const { NewUsername, OldPassword, NewPassword, NewEmail } = req.body;
   try {
     const FindUsername = await Users.findOne({
       where: {
-        Username: Username,
+        id: req.params.id,
       },
     });
 
@@ -140,16 +163,16 @@ router.put("/update_user", LoginCheck, async (req, res) => {
         Email: NewEmail,
         updatedAt: new Date(),
       });
-      req.session.destroy();
       req.session.user = FindUsername;
       res.status(200).send("Password updated");
     } else {
-      res.send("Old Password incorrect");
+      res.status(500).send("Old Password incorrect");
     }
   } catch (error) {
     res.status(400).send(error);
   }
 });
+//route for user to delete account
 router.delete("/delete_user", LoginCheck, async (req, res) => {
   const { Username, Password } = req.body;
   try {
@@ -158,8 +181,6 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
         Username: Username,
       },
     });
-    console.log(req.session.user);
-    console.log(req.session.user.Password);
     const validatePassword = await bcrypt.compare(
       Password,
       req.session.user.Password
@@ -175,10 +196,11 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
     res.status(400).send("Wrong Username or Password.");
   }
 });
-router.post("/logout", (req, res) => {
+//route for user to end session and re-route to login page
+router.post("/logout", LoginCheck, (req, res) => {
   try {
     req.session.destroy();
-    res.status(200).send("logged out");
+    res.status(200).send();
   } catch (error) {
     res.status(400).send(error);
   }

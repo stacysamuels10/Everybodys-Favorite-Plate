@@ -57,6 +57,7 @@
           </div>
           <div class="recipes is-ancestor">
             ${recipe.map(NewRecipe => `
+            <!--rendering saved recipes from template engine back-end-->
             <div class="tile is-2 is-vertical">
               <div class="tile">
                 <a
@@ -72,6 +73,7 @@
               <div class="content">
                 <h4>${NewRecipe.Name}</h4>
               </div>
+              <!--on click event uses template engine to grab recipe id and run an delete request-->
               <button
                 type="button"
                 class="unsave-recipe button is-rounded"

@@ -50,6 +50,7 @@
     </section>
     <div class="main">
       <label for="email">Email: </label>
+      <!--checking if user has entered a valid email after every key stroke-->
       <textarea
         name="email"
         id="email"
@@ -74,6 +75,7 @@ ${updateAccount.Username}</textarea
         placeholder="Enter your current password"
       />
       <label for="NewPassword">New Password: </label>
+      <!--checking if user has entered a valid password after every key stroke-->
       <input
         type="password"
         name="NewPassword"
@@ -84,6 +86,7 @@ ${updateAccount.Username}</textarea
       <div class="validation">
         <p id="validation-txt"></p>
       </div>
+      <!--on click event uses template engine to grab recipe id and run an update request-->
       <input
         type="button"
         class="${updateAccount.id} button is-rounded"

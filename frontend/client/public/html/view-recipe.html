@@ -51,7 +51,7 @@
     <div class="container">
       <div class="content">
         <h1>${title.Name}</h1>
-
+        <!--on error allows for a user to not have an image url-->
         <img
           class="image"
           style="border-radius: 20px"
@@ -65,6 +65,7 @@
         <p>${title.Instructions}</p>
         <h3>Family Story</h3>
         <p>${title.FamilyStory}</p>
+        <!--on click preserves recipe id from template engine and runs a post request-->
         <button
           type="button"
           class="save-recipe button is-rounded"

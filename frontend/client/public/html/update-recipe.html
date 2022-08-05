@@ -70,6 +70,7 @@
           <li>Please enter an image URL only</li>
         </ol>
       </div>
+      <!--template engine rendering recipe data into text area so user can edit instead of completely starting anew-->
       <textarea
         name="recipe-name"
         class="create-recipe"
@@ -114,7 +115,9 @@ ${update.Instructions}</textarea
         class="create-recipe"
       >
 ${update.FamilyStory}</textarea
-      ><button
+      >
+      <!--on click event uses template engine to grab recipe id and run a put request-->
+      <button
         type="button"
         class="${update.id} button is-rounded"
         id="update-recipe"

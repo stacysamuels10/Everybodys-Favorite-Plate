@@ -60,6 +60,7 @@
         </div>
         <div class="recipes is-ancestor">
           ${title.map(NewRecipe => `
+            <!--rendering recipes from template engine back-end get request-->
           <div class="tile is-2 is-vertical">
             <div class="content">
               <a
@@ -73,6 +74,7 @@
             <h4 class="name">${NewRecipe.Name}</h4>
             </div>
             <div class="tile">
+              <!--on click event uses template engine to grab recipe id and run a post request-->
               <input
                 type="button"
                 class="button is-rounded"

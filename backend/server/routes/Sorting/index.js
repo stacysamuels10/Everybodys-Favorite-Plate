@@ -3,10 +3,7 @@ const { NewRecipes } = require("../../../database/models");
 const router = express.Router();
 const sequelize = require("sequelize");
 
-//don't both of these need try catch? if so, status 200 and 400 needed
-
-//
-// try catch needed, status 200 and 400 needed
+//This route is not used but will be kept in the code for future features that will be added soon!
 router.get("/recently_uploaded", async (rec, res) => {
   try {
     const new5 = await NewRecipes.findAll({

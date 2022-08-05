@@ -19,3 +19,22 @@ const runPostRoute = async (id) => {
     alert("Recipe not able to be added. Please try again later");
   }
 };
+
+const logout = async () => {
+  console.log("function reading");
+  const dataWeAreSending = await fetch(`http://localhost:3000/user/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const status = dataWeAreSending.status;
+  console.log(status);
+  if (status === 200) {
+    alert("You have been logged out");
+    window.location.href = "http://localhost:3000";
+  }
+  if (status === 400) {
+    alert("Cannot log out at this time");
+  }
+};

@@ -9,7 +9,7 @@ const validateEmail = () => {
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const Email = document.getElementById("SU-email").value;
   if (!validEmail.test(Email)) {
-    emailError.push("You have entered an invalid email address!");
+    emailError.push("Please enter a valid email address.");
   }
   if (emailError.length > 0) {
     validationField1.innerHTML = emailError.join(" ");
@@ -72,24 +72,50 @@ const sendData = async () => {
     Password.length !== 0 &&
     PasswordRe.length !== 0
   ) {
-    const data = {
-      Email: Email,
-      Username: Username,
-      Password: Password,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    const dataWeAreSending = await fetch(
-      "http://localhost:3000/user/create_user",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+    const validEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (validEmail.test(Email)) {
+      const specialChars = /[~`!@#$%&*+=';/{}|:<>?()_]/;
+      const capitalLetter = /[ABCDEFGHIJKLMNOPQRSTUVWXYZ]/;
+      const lowercaseLetter = /[abcdefghijklmnopqrstuvwxyz]/;
+      const number = /[123456780]/;
+      if (
+        Password.length > 8 &&
+        specialChars.test(Password) &&
+        capitalLetter.test(Password) &&
+        lowercaseLetter.test(Password) &&
+        number.test(Password)
+      ) {
+        const data = {
+          Email: Email,
+          Username: Username,
+          Password: Password,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        const dataWeAreSending = await fetch(
+          "http://localhost:3000/user/create_user",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const status = dataWeAreSending.status;
+        if (status === 200) {
+          window.location.href = "http://localhost:3000/user/home";
+        }
+        if (status === 500) {
+          alert("Username or Password already exists");
+        }
+      } else {
+        alert("Please use a valid email and password");
       }
-    );
-    const status = dataWeAreSending.status;
+    } else {
+      alert("Please use a valid email and password");
+    }
   } else {
     alert("Please enter information in all fields");
   }
@@ -120,42 +146,10 @@ const findUser = async () => {
   }
 };
 
-// const updatePassword = async () => {
-//   const Username = document.getElementById("UP-username").value;
-//   const OldPassword = document.getElementById("UP-password").value;
-//   const NewPassword = document.getElementById("UP-new-password").value;
-//   if (
-//     Username.length !== 0 &&
-//     OldPassword.length !== 0 &&
-//     NewPassword.length !== 0
-//   ) {
-//     const data = {
-//       Username: Username,
-//       OldPassword: OldPassword,
-//       NewPassword: NewPassword,
-//     };
-//     const dataWeAreSending = await fetch(
-//       "http://localhost:3000/user/update_password",
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(data),
-//       }
-//     );
-//     const json = await dataWeAreSending.json();
-//   } else {
-//     console.log("passwords didnt change");
-//   }
-// };
-
 signUpSubmit.onclick = () => {
-  console.log("hello");
   sendData();
 };
 
 signInSubmit.onclick = () => {
-  console.log("i work now");
   findUser();
 };

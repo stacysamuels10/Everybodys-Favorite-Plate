@@ -5,7 +5,6 @@ const { NewRecipes, Users } = require("../../../database/models");
 const router = express.Router();
 
 const LoginCheck = async (req, res, next) => {
-  console.log(req.session);
   if (req.session.user) {
     next();
   } else {
@@ -120,23 +119,41 @@ router.post("/create_user", async (req, res) => {
         updatedAt: new Date(),
       };
       const CreateUser = await Users.create(UserInfo);
+      req.session.user = CreateUser;
       res.status(200).send(CreateUser);
     } else {
-      res.status(400).send("Username or Email already exist.");
+      res.status(500).send("Username or Email already exist.");
     }
   } catch (error) {
-    console.log("no work");
     res.status(400).send(error);
   }
 });
-router.put("/update_user", LoginCheck, async (req, res) => {
-  console.log(req.session);
-  const { Username, NewUsername, OldPassword, NewPassword, NewEmail } =
-    req.body;
+
+router.get("/update_user_render/:id", LoginCheck, async (req, res) => {
+  try {
+    const findAccount = await Users.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (findAccount) {
+      res.status(200).render("update-account", {
+        locals: {
+          updateAccount: findAccount,
+        },
+      });
+    }
+  } catch (error) {
+    res.status(400).send("Account cannot be found");
+  }
+});
+
+router.put("/update_user/:id", LoginCheck, async (req, res) => {
+  const { NewUsername, OldPassword, NewPassword, NewEmail } = req.body;
   try {
     const FindUsername = await Users.findOne({
       where: {
-        Username: Username,
+        id: req.params.id,
       },
     });
 
@@ -154,11 +171,10 @@ router.put("/update_user", LoginCheck, async (req, res) => {
         Email: NewEmail,
         updatedAt: new Date(),
       });
-      req.session.destroy();
       req.session.user = FindUsername;
       res.status(200).send("Password updated");
     } else {
-      res.send("Old Password incorrect");
+      res.status(500).send("Old Password incorrect");
     }
   } catch (error) {
     res.status(400).send(error);
@@ -188,9 +204,10 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
   }
 });
 router.post("/logout", (req, res) => {
+  console.log(req.session.user);
   try {
     req.session.destroy();
-    res.status(200).send("logged out");
+    res.status(200).send();
   } catch (error) {
     res.status(400).send(error);
   }

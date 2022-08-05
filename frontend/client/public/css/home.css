@@ -2,5 +2,14 @@ body {
   background-color: #eeeef0;
   font-family: "Arsenal", sans-serif;
   color: #110903;
-  margin: 10px;
+}
+
+img {
+  border-radius: 10px;
+}
+
+.recipes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }

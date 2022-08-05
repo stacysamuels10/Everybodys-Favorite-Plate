@@ -12,7 +12,7 @@ const LoginCheck = async (req, res, next) => {
   }
 };
 //used code
-router.get("/home", async (req, res) => {
+router.get("/home", LoginCheck, async (req, res) => {
   try {
     const top5 = await NewRecipes.findAll({
       order: [["createdAt", "DESC"]],
@@ -25,7 +25,7 @@ router.get("/home", async (req, res) => {
   }
 });
 //used code
-router.get("/account-info", async (req, res) => {
+router.get("/account-info", LoginCheck, async (req, res) => {
   try {
     let array = [];
     const user = {
@@ -197,7 +197,7 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
   }
 });
 //used code
-router.post("/logout", (req, res) => {
+router.post("/logout", LoginCheck, (req, res) => {
   try {
     req.session.destroy();
     res.status(200).send();

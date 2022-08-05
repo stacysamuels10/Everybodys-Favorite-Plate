@@ -13,7 +13,7 @@ const LoginCheck = async (req, res, next) => {
   }
 };
 //used code
-router.get("/dashboard", async (req, res) => {
+router.get("/dashboard", LoginCheck, async (req, res) => {
   try {
     let array = [];
     const { Email, Username, id } = req.session.user;
@@ -64,7 +64,7 @@ router.get("/get_all_savedrecipe", LoginCheck, async (req, res) => {
   }
 });
 //used code
-router.post("/add_savedrecipe/:id", async (req, res) => {
+router.post("/add_savedrecipe/:id", LoginCheck, async (req, res) => {
   try {
     const FindRecipe = await SavedRecipe.findOne({
       where: {

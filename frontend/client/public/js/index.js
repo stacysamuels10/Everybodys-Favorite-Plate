@@ -1,6 +1,6 @@
 const signUpSubmit = document.getElementById("sign-up-submit");
 const signInSubmit = document.getElementById("sign-in-submit");
-//const changePasswordSubmit = document.getElementById("UP-submit");
+const guestSignIn = document.getElementById("guest");
 
 const validateEmail = () => {
   const validationField1 = document.getElementById("validation-email-txt");
@@ -61,7 +61,7 @@ const passwordMatch = () => {
   validationField3.innerHTML = match.join("");
 };
 
-const sendData = async () => {
+const signUp = async () => {
   const Email = document.getElementById("SU-email").value;
   const Username = document.getElementById("SU-username").value;
   const Password = document.getElementById("SU-password").value;
@@ -121,7 +121,7 @@ const sendData = async () => {
   }
 };
 
-const findUser = async () => {
+const signIn = async () => {
   const Username = document.getElementById("SI-username").value;
   const Password = document.getElementById("SI-password").value;
   if (Username.length !== 0 && Password.length !== 0) {
@@ -138,7 +138,7 @@ const findUser = async () => {
     });
     const status = dataWeAreSending.status;
     if (status === 200) {
-      window.location.href = "/user/home";
+      window.location.href = "http://localhost:3000/user/home";
     }
     if (status === 400) {
       alert("Username or password is incorrect, please try again");
@@ -146,10 +146,38 @@ const findUser = async () => {
   }
 };
 
+const signInGuest = async () => {
+  const Username = "Guest";
+  const Password = "Password1!";
+
+  const data = {
+    Username: Username,
+    Password: Password,
+  };
+  const dataWeAreSending = await fetch("http://localhost:3000/user/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  const status = dataWeAreSending.status;
+  if (status === 200) {
+    window.location.href = "http://localhost:3000/user/home";
+  }
+  if (status === 400) {
+    alert("Username or password is incorrect, please try again");
+  }
+};
+
 signUpSubmit.onclick = () => {
-  sendData();
+  signUp();
 };
 
 signInSubmit.onclick = () => {
-  findUser();
+  signIn();
+};
+
+guestSignIn.onclick = () => {
+  signInGuest();
 };

@@ -1,5 +1,5 @@
 const submitButton = document.getElementById("update-account");
-
+//lets user know if their email is valid
 const validateEmail = () => {
   const validationField1 = document.getElementById("validation-email-txt");
   const emailError = [];
@@ -14,7 +14,7 @@ const validateEmail = () => {
   }
   validationField1.innerHTML = emailError.join(" ");
 };
-
+//lets user know if their password is valid
 const validatePassword = () => {
   const validationField2 = document.getElementById("validation-txt");
   const Password = document.getElementById("NewPassword").value;
@@ -47,7 +47,7 @@ const validatePassword = () => {
   validationField2.innerHTML = errors.join(" ");
   return true;
 };
-
+//checks validity and updates account
 const updateAccount = async (id) => {
   const NewEmail = document.getElementById("email").value;
   const NewUsername = document.getElementById("username").value;
@@ -112,7 +112,7 @@ const updateAccount = async (id) => {
     alert("Please enter information in all fields");
   }
 };
-
+//preserves id from template engine in html
 const bringOverId = async (id) => {
   updateAccount(id);
 };

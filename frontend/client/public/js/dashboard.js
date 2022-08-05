@@ -1,9 +1,4 @@
-const editAccount = document.getElementById("edit-profile");
-
-editAccount.onclick = () => {
-  accountEditRedirect();
-};
-
+//function to unsave and refresh the page
 const unsaveRecipe = async (id) => {
   const dataWeAreSending = await fetch(
     `http://localhost:3000/saved_recipe/delete_savedrecipe/${id}`,

@@ -1,5 +1,5 @@
 const submitButton = document.getElementById("update-recipe");
-
+//function to update recipe
 const updateRecipe = async (id) => {
   const Name = document.getElementById("recipe-name").value;
   const Picture = document.getElementById("recipe-image").value;
@@ -33,7 +33,7 @@ const updateRecipe = async (id) => {
     alert("Recipe cannot be updated at this time. Please try again later");
   }
 };
-
+//preserve recipe id from template engine render
 const bringOverId = async (id) => {
   updateRecipe(id);
 };

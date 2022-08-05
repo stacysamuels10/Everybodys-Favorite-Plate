@@ -3,7 +3,7 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const { NewRecipes, Users } = require("../../../database/models");
 const router = express.Router();
-//used code
+//making sure user is logged in
 const LoginCheck = async (req, res, next) => {
   if (req.session.user) {
     next();
@@ -11,7 +11,7 @@ const LoginCheck = async (req, res, next) => {
     res.render("home");
   }
 };
-//used code
+//render home page
 router.get("/home", LoginCheck, async (req, res) => {
   try {
     const top5 = await NewRecipes.findAll({
@@ -24,7 +24,7 @@ router.get("/home", LoginCheck, async (req, res) => {
     res.status(400).send(error);
   }
 });
-//used code
+//render account info page
 router.get("/account-info", LoginCheck, async (req, res) => {
   try {
     let array = [];
@@ -59,11 +59,11 @@ router.get("/account-info", LoginCheck, async (req, res) => {
     res.status(400).send(error);
   }
 });
-//used code
+//render update account page
 router.get("/update-account", (req, res) => {
   res.render("update-account");
 });
-//used code
+//route to check user's login credentials match a current user
 router.post("/login", async (req, res) => {
   const { Username, Password } = req.body;
   try {
@@ -86,7 +86,7 @@ router.post("/login", async (req, res) => {
     res.status(400).send(error);
   }
 });
-//used code
+//route to create new user if email and username do not exist
 router.post("/create_user", async (req, res) => {
   const { Email, Username, Password } = req.body;
   const salt = await bcrypt.genSalt(10);
@@ -120,7 +120,7 @@ router.post("/create_user", async (req, res) => {
     res.status(400).send(error);
   }
 });
-//used code
+//renders preserved infomation into update account
 router.get("/update_user_render/:id", LoginCheck, async (req, res) => {
   try {
     const findAccount = await Users.findOne({
@@ -139,7 +139,7 @@ router.get("/update_user_render/:id", LoginCheck, async (req, res) => {
     res.status(400).send("Account cannot be found");
   }
 });
-//used code
+//updates user's information after form submission
 router.put("/update_user/:id", LoginCheck, async (req, res) => {
   const { NewUsername, OldPassword, NewPassword, NewEmail } = req.body;
   try {
@@ -172,7 +172,7 @@ router.put("/update_user/:id", LoginCheck, async (req, res) => {
     res.status(400).send(error);
   }
 });
-//used code
+//route for user to delete account
 router.delete("/delete_user", LoginCheck, async (req, res) => {
   const { Username, Password } = req.body;
   try {
@@ -196,7 +196,7 @@ router.delete("/delete_user", LoginCheck, async (req, res) => {
     res.status(400).send("Wrong Username or Password.");
   }
 });
-//used code
+//route for user to end session and re-route to login page
 router.post("/logout", LoginCheck, (req, res) => {
   try {
     req.session.destroy();

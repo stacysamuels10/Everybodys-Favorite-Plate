@@ -1,10 +1,10 @@
 const deleteAccount = document.getElementById("delete-account");
 const deleteAccountDiv = document.getElementById("delete-account-div");
-
+//pulls user id from button and re-directs using id param
 const accountEditRedirect = (id) => {
   window.location.href = `http://localhost:3000/user/update_user_render/${id}`;
 };
-
+//pulls recipe id from button and re-directs using id param
 const editRecipeRedirect = (id) => {
   window.location.href = `http://localhost:3000/new_recipe/update-recipe/${id}`;
 };
@@ -12,7 +12,7 @@ const editRecipeRedirect = (id) => {
 deleteAccount.onclick = () => {
   deleteUser();
 };
-
+//protection to ensure user knows this cannot be undone nor can the delete a user that is not them
 const deleteUser = () => {
   const EnterInfo = document.createElement("h2");
   EnterInfo.id = "enter-info";
@@ -60,7 +60,7 @@ const deleteUser = () => {
     }
   };
 };
-
+//delete recipe
 const deleteRecipe = async (id) => {
   const dataWeAreSending = await fetch(
     `http://localhost:3000/new_recipe/delete_recipe/${id}`,

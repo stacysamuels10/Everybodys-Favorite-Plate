@@ -54,7 +54,7 @@ router.get("/update-recipe/:id", LoginCheck, async (req, res) => {
     res.status(400).send("Recipe does not exist");
   }
 });
-//used code
+//route to create a new recipe
 router.post("/create_newrecipe", LoginCheck, async (req, res) => {
   const { Name, Picture, Ingredients, Instructions, FamilyStory } = req.body;
   try {
@@ -88,7 +88,7 @@ router.post("/create_newrecipe", LoginCheck, async (req, res) => {
     res.status(400).send(error);
   }
 });
-//used code
+//update a recipe that user has created
 router.put("/update_newrecipe/:id", LoginCheck, async (req, res) => {
   const { Name, Picture, Ingredients, Instructions, FamilyStory } = req.body;
   const findrecipe = await NewRecipes.findOne({
@@ -115,7 +115,7 @@ router.put("/update_newrecipe/:id", LoginCheck, async (req, res) => {
     res.status(400).send(error);
   }
 });
-//used code
+//delete a recipe that user has created
 router.delete("/delete_recipe/:id", LoginCheck, async (req, res) => {
   try {
     const findrecipe = await NewRecipes.findOne({

@@ -32,4 +32,12 @@ If you want to download the repository and try this website out for yourself you
 1. Clone the repository located [here](https://github.com/stacysamuels10/DC-Back-End-Project)
 2. Make sure you have node.js and npm installed in your preferred coding environment. It would also be helpful to install and run nodemon.
 3. Once they are all installed, in your terminal, run `npm i` or `npm update` to install the necessary packages.
-4. You will need to create a database and create your own `config.json` file. This is where you will use your own username, password, and host. Do not share this
+4. You will need to create a database and create your own `config.json` file. This is where you will use your own username, password, and host. It is not recommended that you share this file or push it to your own repo.
+5. Navigate to your terminal and run nodemon or node
+6. With your local server running, you can open the browser and navigate to http://localhost:3000 to use this app.
+
+Enjoy!
+
+---
+
+You can read more about this project at [medium.com]()

@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt"); //i dont think we use this here?
 const session = require("express-session");
 const router = express.Router();
 
-//used code
+//checks current session
 const LoginCheck = async (req, res, next) => {
   if (req.session.user) {
     next();
@@ -12,7 +12,7 @@ const LoginCheck = async (req, res, next) => {
     res.render("home");
   }
 };
-//used code
+//renders user's saved recipes
 router.get("/dashboard", LoginCheck, async (req, res) => {
   try {
     let array = [];
@@ -48,7 +48,7 @@ router.get("/dashboard", LoginCheck, async (req, res) => {
     res.status(400).send(error);
   }
 });
-//used code
+//route saved here for future feature
 router.get("/get_all_savedrecipe", LoginCheck, async (req, res) => {
   try {
     const findall = await SavedRecipe.findAll({
@@ -63,7 +63,7 @@ router.get("/get_all_savedrecipe", LoginCheck, async (req, res) => {
     res.status(400).send("Could not find any Saved Recipes");
   }
 });
-//used code
+//add a saved recipe to user's dashboard
 router.post("/add_savedrecipe/:id", LoginCheck, async (req, res) => {
   try {
     const FindRecipe = await SavedRecipe.findOne({
@@ -88,7 +88,7 @@ router.post("/add_savedrecipe/:id", LoginCheck, async (req, res) => {
     res.status(400).send(error.message);
   }
 });
-//used code
+//us-save a recipe
 router.delete("/delete_savedrecipe/:id", LoginCheck, async (req, res) => {
   try {
     const findRecipe = await SavedRecipe.findOne({

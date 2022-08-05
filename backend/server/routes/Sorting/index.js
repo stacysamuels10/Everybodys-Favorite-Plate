@@ -3,6 +3,7 @@ const { NewRecipes } = require("../../../database/models");
 const router = express.Router();
 const sequelize = require("sequelize");
 
+//checking to make sure user is logged in
 const LoginCheck = async (req, res, next) => {
   if (req.session.user) {
     next();

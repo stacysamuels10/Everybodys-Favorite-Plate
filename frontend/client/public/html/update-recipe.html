@@ -14,15 +14,40 @@
     <title>Update Recipe</title>
   </head>
   <body>
-    <div class="nav-bar">
-      <a href="http://localhost:3000/user/home">Home</a>
-      <a href="http://localhost:3000/saved_recipe/dashboard"
-        >My Saved Recipes</a
-      >
-      <a href="http://localhost:3000/new_recipe/create-recipe">Add a Recipe</a>
-      <a href="http://localhost:3000/user/account-info">My Account</a>
-      <a href="" onclick="logout()">Logout</a>
-    </div>
+    <section class="hero is-success">
+      <nav class="level hero-body">
+        <h1 class="level-item has-text-centered content is-large">
+          Everybody's Favorite Plate
+        </h1>
+        <p class="level-item has-text-centered">
+          <a href="http://localhost:3000/user/home" class="link is-info"
+            >Home</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a
+            href="http://localhost:3000/saved_recipe/dashboard"
+            class="link is-info"
+            >My Saved Recipes</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a href="http://localhost:3000/user/account-info" class="link is-info"
+            >My Account</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a
+            href="http://localhost:3000/new_recipe/create-recipe"
+            class="link is-info"
+            >Add a recipe</a
+          >
+        </p>
+        <p class="level-item has-text-centered">
+          <a onclick="logout()" class="link is-info">Logout</a>
+        </p>
+      </nav>
+    </section>
     <div class="container">
       <textarea
         name="recipe-name"
@@ -68,13 +93,14 @@ ${update.Instructions}</textarea
         class="create-recipe"
       >
 ${update.FamilyStory}</textarea
-      ><input
+      ><button
         type="button"
-        class="${update.id}"
-        value="Update Recipe"
+        class="${update.id} button is-rounded"
         id="update-recipe"
         onclick="bringOverId(${update.id})"
-      />
+      >
+        Update Recipe
+      </button>
     </div>
   </body>
 </html>

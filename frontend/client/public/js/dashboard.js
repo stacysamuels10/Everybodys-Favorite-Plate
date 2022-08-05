@@ -1,9 +1,5 @@
 const editAccount = document.getElementById("edit-profile");
 
-const accountEditRedirect = (id) => {
-  window.location.href = `http://localhost:3000/user/update_user_render/${id}`;
-};
-
 editAccount.onclick = () => {
   accountEditRedirect();
 };

@@ -54,7 +54,6 @@ router.get("/get_all_savedrecipe", LoginCheck, async (req, res) => {
     const findall = await SavedRecipe.findAll({
       where: { UserId: req.session.user.id },
     });
-    console.log(findall);
     if (findall) {
       res.status(200).send(findall);
     } else {
@@ -92,14 +91,12 @@ router.post("/add_savedrecipe/:id", async (req, res) => {
 //used code
 router.delete("/delete_savedrecipe/:id", LoginCheck, async (req, res) => {
   try {
-    console.log("i am reading this route");
     const findRecipe = await SavedRecipe.findOne({
       where: {
         UserId: req.session.user.id,
         NewRecipeId: req.params.id,
       },
     });
-    console.log(findRecipe);
     if (!findRecipe) {
       res.status(400).send("Recipe not found");
     }

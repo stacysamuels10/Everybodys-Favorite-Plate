@@ -10,12 +10,7 @@ const editRecipeRedirect = (id) => {
 };
 
 deleteAccount.onclick = () => {
-  const deleteMyAccount = confirm(
-    "Are you sure you want to delete your account? This action cannot be undone"
-  );
-  if (deleteMyAccount) {
-    deleteUser();
-  }
+  deleteUser();
 };
 
 const deleteUser = () => {
@@ -27,35 +22,41 @@ const deleteUser = () => {
   Username.id = "DEL-username";
   Username.placeholder = "Username";
   const Password = document.createElement("input");
+  Password.setAttribute("type", "password");
   Password.id = "DEL-password";
   Password.placeholder = "Password";
   const deleteSubmit = document.createElement("button");
   deleteSubmit.innerHTML = "Delete Account";
   deleteAccountDiv.append(EnterInfo, Username, Password, deleteSubmit);
   deleteSubmit.onclick = async () => {
-    if (Username.value.length !== 0 && Password.value.length !== 0) {
-      const data = {
-        Username: Username.value,
-        Password: Password.value,
-      };
-      const dataWeAreSending = await fetch(
-        "http://localhost:3000/user/delete_user",
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+    const deleteMyAccount = confirm(
+      "Are you sure you want to delete your account? This action cannot be undone"
+    );
+    if (deleteMyAccount) {
+      if (Username.value.length !== 0 && Password.value.length !== 0) {
+        const data = {
+          Username: Username.value,
+          Password: Password.value,
+        };
+        const dataWeAreSending = await fetch(
+          "http://localhost:3000/user/delete_user",
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const status = dataWeAreSending.status;
+        if (status === 200) {
+          alert("Your account has been deleted");
+          window.location.href = "http://localhost:3000";
         }
-      );
-      const status = dataWeAreSending.status;
-      if (status === 200) {
-        alert("Your account has been deleted");
-        window.location.href("http://localhost:3000");
+      } else {
+        alert("Information does not match, please try again.");
+        window.location.href = "http://localhost:3000/user/account-info";
       }
-    } else {
-      alert("Information does not match, please try again.");
-      window.location.href("http://localhost:3000/user/account-info");
     }
   };
 };

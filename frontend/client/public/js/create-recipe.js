@@ -40,7 +40,6 @@ const sendData = async () => {
     }
   } else {
     alert("Please make sure all fields are completed");
-    //need to make alerts to add something to missing spots
   }
 };
 createRecipeSubmit.onclick = () => {

@@ -49,26 +49,31 @@
       </nav>
     </section>
     <div class="container">
-      <h1>${title.Name}</h1>
-      <img
-        src="${title.Picture}"
-        onerror="this.onerror=null;this.src='../../css/logo.png'"
-        ;
-      />
-      <h3>Ingredients</h3>
-      <p>${title.Ingredients}</p>
-      <h3>Instructions</h3>
-      <p>${title.Instructions}</p>
-      <h3>Family Story</h3>
-      <p>${title.FamilyStory}</p>
-      <button
-        type="button"
-        class="save-recipe"
-        id="${title.id}"
-        onclick="runPostRoute(${title.id})"
-      >
-        Save Recipe
-      </button>
+      <div class="content">
+        <h1>${title.Name}</h1>
+
+        <img
+          class="image"
+          style="border-radius: 20px"
+          src="${title.Picture}"
+          onerror="this.onerror=null;this.src='../../css/logo.png'"
+          ;
+        />
+        <h3>Ingredients</h3>
+        <p>${title.Ingredients}</p>
+        <h3>Instructions</h3>
+        <p>${title.Instructions}</p>
+        <h3>Family Story</h3>
+        <p>${title.FamilyStory}</p>
+        <button
+          type="button"
+          class="save-recipe button is-rounded"
+          id="${title.id}"
+          onclick="runPostRoute(${title.id})"
+        >
+          Save Recipe
+        </button>
+      </div>
     </div>
   </body>
 </html>

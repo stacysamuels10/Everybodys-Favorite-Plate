@@ -4,7 +4,7 @@ const { NewRecipes, Users, SavedRecipe } = require("../../../database/models");
 const bcrypt = require("bcrypt"); //i dont think we use this here?
 const router = express.Router();
 
-//used code
+//route used to protect our other routes checking for active session
 const LoginCheck = async (req, res, next) => {
   if (req.session.user) {
     next();
@@ -12,11 +12,11 @@ const LoginCheck = async (req, res, next) => {
     res.render("home");
   }
 };
-//used code
+//rendering page
 router.get("/create-recipe", (req, res) => {
   res.render("create-recipe");
 });
-//used code
+//a render recipe route when a recipe picture is clicked on
 router.get("/view-recipe/:id", LoginCheck, async (req, res) => {
   try {
     const findRecipe = await NewRecipes.findOne({

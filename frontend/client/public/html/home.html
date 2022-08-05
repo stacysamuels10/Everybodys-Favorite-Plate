@@ -5,21 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script defer src="../js/home.js"></script>
+    <link defer rel="stylesheet" href="../css/home.css" />
+    <link
+      defer
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
     <title>Home</title>
   </head>
   <body>
-    <div class="nav-bar">
-      <a href="http://localhost:3000/user/home">Home</a>
-      <a href="http://localhost:3000/saved_recipe/dashboard"
-        >My Saved Recipes</a
-      >
-      <a href="http://localhost:3000/new_recipe/create-recipe">Add a Recipe</a>
-      <a href="http://localhost:3000/user/account-info">My Account</a>
-      <a href="" onclick="logout()">Logout</a>
-    </div>
-    <div class="container">
-      <div class="intro">
-        <h1>Grab a Plate!</h1>
+    <nav class="level">
+  <p class="level-item has-text-centered">
+    <a href="http://localhost:3000/user/home" class="link is-info">Home</a>
+  </p>
+  <p class="level-item has-text-centered">
+    <a href="http://localhost:3000/saved_recipe/dashboard" class="link is-info">My Saved Recipes</a>
+  </p>
+  <h1 class="level-item has-text-centered content is-large">
+    Everybody's Favorite Plate
+  </h1>
+  <p class="level-item has-text-centered">
+    <a href="http://localhost:3000/user/account-info" class="link is-info">My Account</a>
+  </p>
+  <p class="level-item has-text-centered">
+    <a onclick="logout()" class="link is-info">Logout</a>
+  </p>
+</nav>
+
+    <section class="hero">
+      <div class="hero-body">
+        <h1 class="title">Grab a Plate!</h1>
         <p>
           If you are here, you are like us. You love food. We created
           Everybody's Favorite Plate based of the fond memories we all have of
@@ -32,31 +47,32 @@
           world just a little bit more, bite by bite. Feel free to save recipes,
           upload your own, and start cooking!
         </p>
-      </div>
+      </section>
       <div class="main">
         <h2>Most Recent Recipes:</h2>
-        <div class="recipes">
+        <div class="recipes is-ancestor">
           ${title.map(NewRecipe => `
-          <div class="recipe-card">
-            <h2>${NewRecipe.Name}</h2>
-            <div class="recipe-img">
+          <div class="tile is-3 is-vertical">
+            <h2 class="name">${NewRecipe.Name}</h2>
+            <div class="tile">
+              <input
+                type="button"
+                class="button is-rounded"
+                id="${NewRecipe.id}"
+                value="Save Recipe"
+                onclick="runPostRoute(${NewRecipe.id})"
+              />
+            </div>
+            <div class="">
               <a
                 href="http://localhost:3000/new_recipe/view-recipe/${NewRecipe.id}"
                 ><img
                   src="${NewRecipe.Picture}"
                   id="${NewRecipe.id}"
-                  style="width: 100px; height: 80px"
                   onerror="this.src='../css/logo.png'"
                   ;
               /></a>
             </div>
-            <input
-              type="button"
-              class="save-recipe"
-              id="${NewRecipe.id}"
-              value="Save Recipe"
-              onclick="runPostRoute(${NewRecipe.id})"
-            />
           </div>
           `).join('')}
         </div>

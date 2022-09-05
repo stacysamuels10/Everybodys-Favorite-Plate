@@ -12,7 +12,7 @@ const LoginCheck = async (req, res, next) => {
   }
 };
 //render home page
-router.get("/home", LoginCheck, async (req, res) => {
+router.get("/home", async (req, res) => {
   try {
     const top5 = await NewRecipes.findAll({
       order: [["createdAt", "DESC"]],
